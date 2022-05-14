@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Style.css</file>
+        <file>img/icon.png</file>
+        <file>img/splash.png</file>
+        <file>img/bt_actif.png</file>
+        <file>img/bt_actif_pressed.png</file>
+        <file>img/bt_normal.png</file>
+        <file>img/bt_normal_pressed.png</file>
+    </qresource>
+</RCC>
