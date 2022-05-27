@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,9 +9,9 @@ CONFIG += c++14
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    UI/blackscreen.cpp \
     Widget/app_splashscreen.cpp \
     Widget/frameless.cpp \
-    Widget/pushbuttoniconautoresize.cpp \
     Widget/qflowlayout.cpp \
     UI/screensaver.cpp \
     UI/timerbutton.cpp \
@@ -19,12 +19,14 @@ SOURCES += \
     Widget/timerbutton_pushbutton.cpp \
     main.cpp \
     utils/StyleLoader.cpp\
+    utils/processesclearer.cpp \
+    utils/remember.cpp
 
 HEADERS += \
+    UI/blackscreen.h \
     UI/ui_template.h \
     Widget/app_splashscreen.h \
     Widget/frameless.h \
-    Widget/pushbuttoniconautoresize.h \
     Widget/qflowlayout.h \
     UI/screensaver.h \
     UI/screensaver_ui.h \
@@ -32,9 +34,14 @@ HEADERS += \
     Widget/smoothimagelabel.h \
     Widget/timerbutton_pushbutton.h \
     UI/timerbutton_ui.h \
+    lib/include/fameta-counter \
     model/TimerButton_DOT.h \
-    utils/StyleLoader.h
+    utils/Remember_keys.h \
+    utils/StyleLoader.h \
+    utils/processesclearer.h \
+    utils/remember.h
 
+RC_ICONS = ./ressources/img/icon.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -44,5 +51,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     ressources/Ressources.qrc
 
-FORMS += \
-    form.ui
+FORMS +=

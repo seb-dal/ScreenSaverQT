@@ -11,20 +11,23 @@
 #include <QtWidgets/QRubberBand>
 #include <QtWidgets/QWidget>
 
+#include "lib/include/fameta-counter"
+constexpr fameta::counter<__COUNTER__, 0> C;
+
 class FrameLess : public QObject {
     Q_OBJECT
 
 public:
     enum Edge {
-        None = 0x0,
-        Left = 0x1,
-        Top = 0x2,
-        Right = 0x4,
-        Bottom = 0x8,
-        TopLeft = 0x10,
-        TopRight = 0x20,
-        BottomLeft = 0x40,
-        BottomRight = 0x80,
+        None = 0,
+        Left = auto_pow2(C),
+        Top = auto_pow2(C),
+        Right = auto_pow2(C),
+        Bottom = auto_pow2(C),
+        TopLeft = auto_pow2(C),
+        TopRight = auto_pow2(C),
+        BottomLeft = auto_pow2(C),
+        BottomRight = auto_pow2(C),
     };
     Q_ENUM(Edge);
     Q_DECLARE_FLAGS(Edges, Edge);

@@ -129,6 +129,7 @@ void FrameLess::mouseMove(QMouseEvent* e)
                 right = e->globalPosition().toPoint().x();
                 break;
             }
+
             QRect newRect(QPoint(left, top), QPoint(right, bottom));
             if (newRect.width() < _target->minimumWidth()) {
                 left = _target->frameGeometry().x();
@@ -171,21 +172,45 @@ void FrameLess::updateCursorShape(const QPoint& pos)
 
 void FrameLess::calculateCursorPosition(const QPoint& pos, const QRect& framerect, Edges& _edge)
 {
-    bool onLeft = pos.x() >= framerect.x() - _borderWidth && pos.x() <= framerect.x() + _borderWidth && pos.y() <= framerect.y() + framerect.height() - _borderWidth && pos.y() >= framerect.y() + _borderWidth;
+    bool onLeft = pos.x() >= framerect.x() - _borderWidth
+        && pos.x() <= framerect.x() + _borderWidth
+        && pos.y() <= framerect.y() + framerect.height() - _borderWidth
+        && pos.y() >= framerect.y() + _borderWidth;
 
-    bool onRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() && pos.y() >= framerect.y() + _borderWidth && pos.y() <= framerect.y() + framerect.height() - _borderWidth;
+    bool onRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth
+        && pos.x() <= framerect.x() + framerect.width()
+        && pos.y() >= framerect.y() + _borderWidth
+        && pos.y() <= framerect.y() + framerect.height() - _borderWidth;
 
-    bool onBottom = pos.x() >= framerect.x() + _borderWidth && pos.x() <= framerect.x() + framerect.width() - _borderWidth && pos.y() >= framerect.y() + framerect.height() - _borderWidth && pos.y() <= framerect.y() + framerect.height();
+    bool onBottom = pos.x() >= framerect.x() + _borderWidth
+        && pos.x() <= framerect.x() + framerect.width() - _borderWidth
+        && pos.y() >= framerect.y() + framerect.height() - _borderWidth
+        && pos.y() <= framerect.y() + framerect.height();
 
-    bool onTop = pos.x() >= framerect.x() + _borderWidth && pos.x() <= framerect.x() + framerect.width() - _borderWidth && pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
+    bool onTop = pos.x() >= framerect.x() + _borderWidth
+        && pos.x() <= framerect.x() + framerect.width() - _borderWidth
+        && pos.y() >= framerect.y()
+        && pos.y() <= framerect.y() + _borderWidth;
 
-    bool onBottomLeft = pos.x() <= framerect.x() + _borderWidth && pos.x() >= framerect.x() && pos.y() <= framerect.y() + framerect.height() && pos.y() >= framerect.y() + framerect.height() - _borderWidth;
+    bool onBottomLeft = pos.x() <= framerect.x() + _borderWidth
+        && pos.x() >= framerect.x()
+        && pos.y() <= framerect.y() + framerect.height()
+        && pos.y() >= framerect.y() + framerect.height() - _borderWidth;
 
-    bool onBottomRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() && pos.y() >= framerect.y() + framerect.height() - _borderWidth && pos.y() <= framerect.y() + framerect.height();
+    bool onBottomRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth
+        && pos.x() <= framerect.x() + framerect.width()
+        && pos.y() >= framerect.y() + framerect.height() - _borderWidth
+        && pos.y() <= framerect.y() + framerect.height();
 
-    bool onTopRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth && pos.x() <= framerect.x() + framerect.width() && pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
+    bool onTopRight = pos.x() >= framerect.x() + framerect.width() - _borderWidth
+        && pos.x() <= framerect.x() + framerect.width()
+        && pos.y() >= framerect.y()
+        && pos.y() <= framerect.y() + _borderWidth;
 
-    bool onTopLeft = pos.x() >= framerect.x() && pos.x() <= framerect.x() + _borderWidth && pos.y() >= framerect.y() && pos.y() <= framerect.y() + _borderWidth;
+    bool onTopLeft = pos.x() >= framerect.x()
+        && pos.x() <= framerect.x() + _borderWidth
+        && pos.y() >= framerect.y()
+        && pos.y() <= framerect.y() + _borderWidth;
 
     if (onLeft) {
         _edge = Left;

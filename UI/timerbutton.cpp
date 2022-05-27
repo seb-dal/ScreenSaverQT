@@ -7,10 +7,6 @@ TimerButton::TimerButton(QString title, QWidget* parent)
 {
     ui->setupUi(this);
     ui->Title->setText(title);
-
-    QFont f(ui->Title->font());
-    f.setBold(true);
-    ui->Title->setFont(f);
 }
 
 TimerButton::~TimerButton()
@@ -20,11 +16,12 @@ TimerButton::~TimerButton()
 
 void TimerButton::resizeEvent(QResizeEvent*)
 {
-    int size = qMin(this->sizeHint().height(), this->sizeHint().width());
+    QSize s = this->size();
+    int size = qMin(s.height(), s.width());
     float ratio = size / 200.f;
 
     QFont f(ui->Title->font());
-    f.setPixelSize(44 * ratio);
+    f.setPixelSize(16 * ratio);
     ui->Title->setFont(f);
     //ui->Title->setp
 }

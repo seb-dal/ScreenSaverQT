@@ -37,6 +37,8 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
 
     componentCreate(MainLayout, QVBoxLayout, this);
     {
+        MainLayout->setContentsMargins(0, 0, 0, 0);
+
         componentCreate(BT_icon, SmoothImageLabel, this);
         {
             BT_icon->setText("");
@@ -45,6 +47,8 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
 
             componentCreate(layout, QVBoxLayout, BT_icon);
             {
+                layout->setContentsMargins(0, 0, 0, 0);
+
                 componentCreate(textBT, QLabel, BT_icon);
                 {
                     layout->addWidget(textBT);
@@ -92,7 +96,8 @@ void TimerButton_PushButton::setMaxTimer(int newMax)
 
 void TimerButton_PushButton::resizeEvent(QResizeEvent* /*event*/)
 {
-    sizeIcon = qMin(this->size().height(), this->size().width());
+    QSize s = this->size();
+    sizeIcon = qMin(s.height(), s.width());
     updateIcon();
     float ratio = sizeIcon / 200.f;
 
@@ -120,21 +125,15 @@ void TimerButton_PushButton::setNumberAfterDot(TimerButton_AFTER_DOT newDiv)
 
 void TimerButton_PushButton::onPressed()
 {
-    if (isActif()) {
-        currentIcon = TBPB_state::actif | TBPB_state::pressed;
-    } else {
-        currentIcon = TBPB_state::normal | TBPB_state::pressed;
-    }
+    currentIcon = (isActif() ? TBPB_state::actif : TBPB_state::normal) | TBPB_state::pressed;
+
     updateIcon();
 }
 
 void TimerButton_PushButton::onReleased()
 {
-    if (isActif()) {
-        currentIcon = TBPB_state::normal;
-    } else {
-        currentIcon = TBPB_state::actif;
-    }
+    currentIcon = (isActif() ? TBPB_state::normal : TBPB_state::actif);
+
     updateIcon();
     setActif(!isActif());
 }
@@ -192,21 +191,30 @@ void TimerButton_PushButton::updateIcon(bool force)
     resize = now;
     appliedIcon = currentIcon;
 
-    sizeIcon = qMin(this->size().height(), this->size().width());
+    QSize s = this->size();
+    sizeIcon = qMin(s.height(), s.width());
     QPixmap* current;
     switch (currentIcon) {
     case TBPB_state::normal:
         current = icon_normal;
         break;
+
     case TBPB_state::normal | TBPB_state::pressed:
         current = icon_normal_pressed;
         break;
+
     case TBPB_state::actif:
         current = icon_actif;
         break;
+
     case TBPB_state::actif | TBPB_state::pressed:
         current = icon_actif_pressed;
         break;
+
+    default:
+        current = nullptr;
     }
-    BT_icon->setPixmap(current->scaled(QSize(sizeIcon, sizeIcon), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+
+    if (current != nullptr)
+        BT_icon->setPixmap(current->scaled(QSize(sizeIcon, sizeIcon), Qt::KeepAspectRatio, Qt::SmoothTransformation));
 }

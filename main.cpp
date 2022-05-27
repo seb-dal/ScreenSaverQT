@@ -8,29 +8,15 @@
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
+    Remember::initialize();
     TimerButton_PushButton::initialize();
 
     ScreenSaver w;
-    APP_SplashScreen app_ss([&] {
-        w.show();
-    });
+    APP_SplashScreen app_ss([&] { w.show(); });
 
-    //app.processEvents();
+    int err_code = app.exec();
 
-    return app.exec();
+    Remember::saveData();
 
-    /*QApplication a(argc, argv);
-    QFrame *widget = new QFrame;
-    widget->setFrameShape( QFrame::Shape::Box);
-    widget->setLineWidth(8);
-    QPalette palette = widget->palette();
-    palette.setBrush(QPalette::Base, Qt::transparent);
-    widget->setWindowFlags(Qt::FramelessWindowHint);
-    widget->setAttribute(Qt::WA_NoSystemBackground);
-    widget->setAttribute(Qt::WA_TranslucentBackground);
-    //widget->setAttribute(Qt::WA_TransparentForMouseEvents);
-    widget->setAttribute(Qt::WA_OpaquePaintEvent, false);
-    FrameLess f(widget);
-    widget->show();
-    return a.exec();*/
+    return err_code;
 }

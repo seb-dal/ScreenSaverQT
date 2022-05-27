@@ -28,8 +28,10 @@ public:
 
         componentCreate(MainLayout, QVBoxLayout, parent);
         {
+            MainLayout->setContentsMargins(0, 6, 0, 6);
             componentCreate(horizontalLayout, QHBoxLayout, nullptr);
             {
+                horizontalLayout->setContentsMargins(0, 0, 0, 0);
                 MainLayout->addLayout(horizontalLayout);
 
                 componentCreate(Title, QLabel, parent);
@@ -37,6 +39,12 @@ public:
                     horizontalLayout->addWidget(Title);
                     Title->setAlignment(Qt::AlignCenter);
                     Title->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
+
+                    QFont f(Title->font());
+                    {
+                        f.setBold(true);
+                    }
+                    Title->setFont(f);
 
                     componentCreate(bt, TimerButton_PushButton, Title);
                     {
