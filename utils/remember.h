@@ -25,6 +25,7 @@ public:
 
 private:
     static QSettings* iniFile;
+    static QHash<QString, QVariant> values;
 };
 
 #endif // REMEMBER_H

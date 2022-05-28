@@ -56,8 +56,7 @@ public:
         QMetaObject::connectSlotsByName(parent);
     } // setupUi
 
-    void
-    retranslateUi(QWidget* parent)
+    void retranslateUi(QWidget* /*parent*/)
     {
     } // retranslateUi
 };

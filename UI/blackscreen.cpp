@@ -1,5 +1,7 @@
 #include "blackscreen.h"
 
+#include <QLabel>
+
 BlackScreen::BlackScreen(QWidget* parent)
     : QDialog(parent)
 {

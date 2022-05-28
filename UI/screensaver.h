@@ -25,11 +25,6 @@ public:
     ScreenSaver(QWidget* parent = nullptr);
     ~ScreenSaver();
 
-    void hide_win()
-    {
-        this->hide();
-    }
-
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void ShowHideframe();

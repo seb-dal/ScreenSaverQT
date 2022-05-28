@@ -65,10 +65,10 @@ bool ScreenSaver::event(QEvent* e)
         break;
 
     case QInputEvent::Resize:
-        Remember::put(App_Size::name(), this->size());
+        Remember::put(APP::App_Size::name(), this->size());
         break;
     case QInputEvent::Move:
-        Remember::put(App_Position::name(), this->pos());
+        Remember::put(APP::App_Position::name(), this->pos());
         break;
     default:
         break;
