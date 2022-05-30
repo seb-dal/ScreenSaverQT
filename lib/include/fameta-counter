@@ -1,3 +1,9 @@
 #include "../fameta-counter/include/fameta/counter.hpp"
 
-#define auto_pow2(counter) 1 << counter.next<__COUNTER__>()
+// up to 32 flags
+#define auto_int_pow2(counter) \
+    1 << counter.next<__COUNTER__>()
+
+// up to 64 flags
+#define auto_long_pow2(counter) \
+    1L << counter.next<__COUNTER__>()

@@ -1,8 +1,7 @@
 #include "timerbutton_pushbutton.h"
 
 #include "UI/ui_template.h"
-#include "qicon.h"
-
+#include <QIcon>
 #include <QPaintEngine>
 #include <QResizeEvent>
 #include <QString>

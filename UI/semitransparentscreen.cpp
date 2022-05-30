@@ -1,4 +1,5 @@
 #include "semitransparentscreen.h"
+
 #include <QApplication>
 #include <QScreen>
 

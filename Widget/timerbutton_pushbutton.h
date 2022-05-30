@@ -3,12 +3,11 @@
 
 #include "smoothimagelabel.h"
 
+#include "model/TimerButton_DOT.h"
 #include <QDateTime>
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
-
-#include <model/TimerButton_DOT.h>
 
 enum TBPB_state {
     normal,

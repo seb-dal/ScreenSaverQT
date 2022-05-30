@@ -1,8 +1,8 @@
 #ifndef UI_SCREENSAVER_H
 #define UI_SCREENSAVER_H
 
-#include "../Widget/frameless.h"
 #include "UI/dialbutton.h"
+#include "Widget/frameless.h"
 #include "blackscreen.h"
 #include "semitransparentscreen.h"
 #include "timerbutton.h"

@@ -1,5 +1,11 @@
 #include "app_splashscreen.h"
 
+#define deleteIF(var)  \
+    if (var) {         \
+        delete var;    \
+        var = nullptr; \
+    }
+
 APP_SplashScreen::APP_SplashScreen(std::function<void()> func_then, const int time)
     : time(time)
     , func_then(func_then)

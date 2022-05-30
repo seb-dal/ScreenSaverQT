@@ -11,12 +11,6 @@ class APP_SplashScreen : public QObject {
 public:
     APP_SplashScreen(std::function<void()> func_then, const int time = 500);
 
-#define deleteIF(var)  \
-    if (var) {         \
-        delete var;    \
-        var = nullptr; \
-    }
-
     ~APP_SplashScreen();
 
 public slots:

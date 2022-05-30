@@ -1,6 +1,6 @@
 #include "StyleLoader.h"
-#include "qdebug.h"
 
+#include <QDebug>
 #include <QFile>
 #include <QTextStream>
 

@@ -1,9 +1,10 @@
 #include "UI/screensaver.h"
 
+#include "Widget/app_splashscreen.h"
+#include "Widget/timerbutton_pushbutton.h"
+#include "utils/processesclearer.h"
 #include <QApplication>
 #include <QFrame>
-#include <Widget/app_splashscreen.h>
-#include <Widget/timerbutton_pushbutton.h>
 
 int main(int argc, char* argv[])
 {
@@ -17,6 +18,7 @@ int main(int argc, char* argv[])
     int err_code = app.exec();
 
     Remember::saveData();
+    ProcessesClearer::clearAll();
 
     return err_code;
 }

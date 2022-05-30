@@ -1,6 +1,7 @@
 #ifndef FRAMELESS_H
 #define FRAMELESS_H
 
+#include "lib/include/fameta-counter"
 #include <QtCore/QEvent>
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
@@ -11,7 +12,6 @@
 #include <QtWidgets/QRubberBand>
 #include <QtWidgets/QWidget>
 
-#include "lib/include/fameta-counter"
 constexpr fameta::counter<__COUNTER__, 0> C;
 
 class FrameLess : public QObject {
@@ -20,14 +20,14 @@ class FrameLess : public QObject {
 public:
     enum Edge {
         None = 0,
-        Left = auto_pow2(C),
-        Top = auto_pow2(C),
-        Right = auto_pow2(C),
-        Bottom = auto_pow2(C),
-        TopLeft = auto_pow2(C),
-        TopRight = auto_pow2(C),
-        BottomLeft = auto_pow2(C),
-        BottomRight = auto_pow2(C),
+        Left = auto_int_pow2(C),
+        Top = auto_int_pow2(C),
+        Right = auto_int_pow2(C),
+        Bottom = auto_int_pow2(C),
+        TopLeft = auto_int_pow2(C),
+        TopRight = auto_int_pow2(C),
+        BottomLeft = auto_int_pow2(C),
+        BottomRight = auto_int_pow2(C),
     };
     Q_ENUM(Edge);
     Q_DECLARE_FLAGS(Edges, Edge);

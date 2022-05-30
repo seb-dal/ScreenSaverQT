@@ -61,6 +61,7 @@ bool ScreenSaver::event(QEvent* e)
 {
     switch (e->type()) {
     case QInputEvent::Show:
+    case QInputEvent::WindowActivate:
         ProcessesClearer::clearAll();
         break;
 
@@ -73,6 +74,8 @@ bool ScreenSaver::event(QEvent* e)
     default:
         break;
     }
+
+    qDebug() << e->type();
 
     return QMainWindow::event(e);
 }

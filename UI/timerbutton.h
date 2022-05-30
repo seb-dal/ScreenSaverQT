@@ -1,10 +1,9 @@
 #ifndef TIMERBUTTON_H
 #define TIMERBUTTON_H
 
+#include "model/TimerButton_DOT.h"
 #include <QTimer>
 #include <QWidget>
-
-#include <model/TimerButton_DOT.h>
 
 namespace Ui {
 class TimerButton;
