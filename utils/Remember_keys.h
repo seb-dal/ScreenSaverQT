@@ -11,7 +11,7 @@
                                                             \
     public:                                                 \
         static int id() { return i; }                       \
-        static QString name() { return #NAME; }             \
+        static const QString name() { return #NAME; }       \
     }
 
 //

@@ -75,7 +75,5 @@ bool ScreenSaver::event(QEvent* e)
         break;
     }
 
-    qDebug() << e->type();
-
     return QMainWindow::event(e);
 }
