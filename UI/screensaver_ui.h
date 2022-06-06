@@ -38,15 +38,7 @@ public:
     DialButton* dial_semiTransparentScreen;
     SemiTransparentScreen* sts;
 
-    int nb;
-    int time;
     bool hideAfter;
-    bool hibernateMode;
-
-    bool veille_display;
-    bool eteindre_display;
-    bool ecranNoir_display;
-    bool sts_display;
 
 public:
     void setupUi(QMainWindow* ScreenSaver)
@@ -55,10 +47,34 @@ public:
             ScreenSaver->setObjectName(QString::fromUtf8("ScreenSaver"));
         ScreenSaver->setWindowTitle("ScreenSaver");
 
+        int nb = Remember::get_(APP::Number_After_Dot::name(), 1);
+        nb = qMin(qMax(nb, 0), 2);
+        Remember::put(APP::Number_After_Dot::name(), nb);
+
+        int time = Remember::get_(APP::Time_After_Button_Clicked::name(), 3);
+        time = qMax(time, 0);
+        Remember::put(APP::Time_After_Button_Clicked::name(), time);
+
+        hideAfter = Remember::get_(APP::Hide_After_Action ::name(), 1) != 0;
+
+        bool veille_display = Remember::get_(APP::Show_Standby_Button::name(), 1) != 0;
+
+        bool eteindre_display = Remember::get_(APP::Show_ScreenOff_Button::name(), 1) != 0;
+
+        bool ecranNoir_display = Remember::get_(APP::Show_BlackScreen_Button::name(), 1) != 0;
+
+        bool sts_display = Remember::get_(APP::Show_ShadeScreen_Button::name(), 1) != 0;
+
         QPoint pos = Remember::get_<QPoint>(APP::App_Position::name(), QPoint(10, 10));
         ScreenSaver->move(pos);
 
-        QSize size = Remember::get_<QSize>(APP::App_Size::name(), QSize(200, 3 * 200));
+        int nbButton
+            = static_cast<int>(veille_display)
+            + static_cast<int>(eteindre_display)
+            + static_cast<int>(ecranNoir_display)
+            + static_cast<int>(sts_display);
+
+        QSize size = Remember::get_<QSize>(APP::App_Size::name(), QSize(200, nbButton * 200));
         ScreenSaver->resize(size);
 
         StyleLoader::loadStyle(ScreenSaver, "://Style.css");
@@ -74,7 +90,7 @@ public:
             ScreenSaver->setAttribute(Qt::WA_OpaquePaintEvent, false);
 
             fl = new FrameLess(ScreenSaver);
-            ScreenSaver->setMinimumSize(100, 100);
+            ScreenSaver->setMinimumSize(100, nbButton * 75);
         }
 
         componentCreate(frame, QFrame, ScreenSaver);
@@ -82,45 +98,25 @@ public:
             ScreenSaver->setCentralWidget(frame);
             frame->setFrameShape(QFrame::Shape::Box);
             frame->setFrameShadow(QFrame::Shadow::Raised);
-            //ScreenSaver->setMidLineWidth(4);
-            //ScreenSaver->setLineWidth(2);
 
             componentCreate(MainLayout, QVBoxLayout, frame);
             {
                 MainLayout->setContentsMargins(0, 0, 0, 0);
 
-                nb = Remember::get_(APP::Number_After_Dot::name(), 1);
-                nb = qMin(qMax(nb, 0), 2);
-                Remember::put(APP::Number_After_Dot::name(), nb);
-
-                time = Remember::get_(APP::Time_After_Button_Clicked::name(), 3);
-                time = qMax(time, 0);
-                Remember::put(APP::Time_After_Button_Clicked::name(), time);
-
-                hideAfter = Remember::get_(APP::Hide_After_Action ::name(), 1) != 0;
-
-                hibernateMode = Remember::get_(APP::Standby_HibernateMode::name(), 1) != 0;
-
-                veille_display = Remember::get_(APP::Show_Standby_Button::name(), 1) != 0;
-
-                eteindre_display = Remember::get_(APP::Show_ScreenOff_Button::name(), 1) != 0;
-
-                ecranNoir_display = Remember::get_(APP::Show_BlackScreen_Button::name(), 1) != 0;
-
-                sts_display = Remember::get_(APP::Show_ShadeScreen_Button::name(), 1) != 0;
-
                 if (veille_display) {
-                    component2Create(veille, TimerButton, ScreenSaver->tr("Mettre en veille"), frame);
+                    component2Create(veille, TimerButton, QCoreApplication::translate("ScreenSaver", "Standby"), frame);
                     {
                         MainLayout->addWidget(veille);
                         veille->updateButton();
                         veille->setMaxTimer(time);
                         veille->setNumberAfterDot(static_cast<TimerButton_AFTER_DOT>(nb));
-                        veille->setFunction([&] {
+                        veille->setFunction([this] {
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
-                            auto ret = QtConcurrent::run([&] {
+                            auto ret = QtConcurrent::run([] {
+                                bool hibernateMode = Remember::get_(APP::Standby_HibernateMode::name(), 1) != 0;
+
                                 QString commande = QString(
                                     "powershell.exe"
                                     " -command add-type"
@@ -138,13 +134,13 @@ public:
                 }
 
                 if (eteindre_display) {
-                    component2Create(eteindre, TimerButton, "Eteindre l'écran", frame);
+                    component2Create(eteindre, TimerButton, QCoreApplication::translate("ScreenSaver", "Turn off screen"), frame);
                     {
                         MainLayout->addWidget(eteindre);
                         eteindre->updateButton();
                         eteindre->setMaxTimer(time);
                         eteindre->setNumberAfterDot(static_cast<TimerButton_AFTER_DOT>(nb));
-                        eteindre->setFunction([&] {
+                        eteindre->setFunction([this] {
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
@@ -163,13 +159,13 @@ public:
                 }
 
                 if (ecranNoir_display) {
-                    component2Create(ecranNoir, TimerButton, "Ecran noire", frame);
+                    component2Create(ecranNoir, TimerButton, QCoreApplication::translate("ScreenSaver", "Black Screen"), frame);
                     {
                         MainLayout->addWidget(ecranNoir);
                         ecranNoir->updateButton();
                         ecranNoir->setMaxTimer(time);
                         ecranNoir->setNumberAfterDot(static_cast<TimerButton_AFTER_DOT>(nb));
-                        ecranNoir->setFunction([&] {
+                        ecranNoir->setFunction([this] {
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
@@ -181,14 +177,15 @@ public:
                 }
 
                 if (sts_display) {
-                    component2Create(dial_semiTransparentScreen, DialButton, "Opacité", frame);
+                    component2Create(dial_semiTransparentScreen, DialButton, QCoreApplication::translate("ScreenSaver", "Opacity"), frame);
                     {
                         MainLayout->addWidget(dial_semiTransparentScreen);
 
                         componentCreate(sts, SemiTransparentScreen, nullptr);
                         {
                             sts->show();
-                            QObject::connect(dial_semiTransparentScreen,
+                            QObject::connect( //
+                                dial_semiTransparentScreen,
                                 &DialButton::valueChange,
                                 sts,
                                 &SemiTransparentScreen::setTransparenty);

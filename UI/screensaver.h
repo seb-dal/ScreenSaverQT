@@ -10,11 +10,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui {
 class ScreenSaver;
 }
-namespace Var {
-struct ScreenSaver {
-    bool show_frame = false;
-};
-}
 
 QT_END_NAMESPACE
 
@@ -31,7 +26,9 @@ protected:
     bool event(QEvent* e) override;
 
 private:
+    bool show_frame = false;
+
+private:
     Ui::ScreenSaver* ui;
-    Var::ScreenSaver var;
 };
 #endif // SCREENSAVER_H

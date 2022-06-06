@@ -6,9 +6,12 @@ CONFIG += c++14
 
 CONFIG(release, debug|release) {
     message( "release" )
-    QMAKE_CXXFLAGS_RELEASE  += -Ofast
-    TARGET=ScreenSaver
+    QMAKE_CXXFLAGS_RELEASE += -Ofast
+    TARGET = ScreenSaver
 }
+
+CONFIG += lrelease
+CONFIG += embed_translations
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -20,7 +23,6 @@ SOURCES += \
     UI/semitransparentscreen.cpp \
     Widget/app_splashscreen.cpp \
     Widget/frameless.cpp \
-    Widget/qflowlayout.cpp \
     UI/screensaver.cpp \
     UI/timerbutton.cpp \
     Widget/smoothimagelabel.cpp \
@@ -28,7 +30,9 @@ SOURCES += \
     main.cpp \
     utils/StyleLoader.cpp\
     utils/processesclearer.cpp \
-    utils/remember.cpp
+    utils/remember.cpp \
+    utils/translator.cpp \
+    utils/util.cpp
 
 HEADERS += \
     UI/blackscreen.h \
@@ -38,7 +42,6 @@ HEADERS += \
     UI/ui_template.h \
     Widget/app_splashscreen.h \
     Widget/frameless.h \
-    Widget/qflowlayout.h \
     UI/screensaver.h \
     UI/screensaver_ui.h \
     UI/timerbutton.h \
@@ -49,8 +52,11 @@ HEADERS += \
     model/TimerButton_DOT.h \
     utils/Remember_keys.h \
     utils/StyleLoader.h \
+    utils/appConst.h \
     utils/processesclearer.h \
-    utils/remember.h
+    utils/remember.h \
+    utils/translator.h \
+    utils/util.h
 
 RC_ICONS = ./ressources/img/icon.ico
 
@@ -62,7 +68,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     ressources/Ressources.qrc
 
+TRANSLATIONS += \
+    ressources/lang/ScreenSaver_en.ts \
+    ressources/lang/ScreenSaver_fr.ts
+
 
 include(ConfigBuildFiles.pri)
 
 include(ConfigDeployementAPP.pri)
+
+FORMS +=

@@ -1,7 +1,8 @@
 #ifndef REMEMBER_H
 #define REMEMBER_H
 
-#include <QSettings>
+#include <QString>
+#include <QVariant>
 
 class Remember {
 public:
@@ -24,7 +25,6 @@ public:
     }
 
 private:
-    static QSettings* iniFile;
     static QHash<QString, QVariant> values;
 };
 

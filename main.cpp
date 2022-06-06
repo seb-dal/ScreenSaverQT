@@ -3,6 +3,7 @@
 #include "Widget/app_splashscreen.h"
 #include "Widget/timerbutton_pushbutton.h"
 #include "utils/processesclearer.h"
+#include "utils/translator.h"
 #include <QApplication>
 #include <QFrame>
 
@@ -10,6 +11,8 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
     Remember::initialize();
+    Translator::setLanguage();
+
     TimerButton_PushButton::initialize();
 
     ScreenSaver w;

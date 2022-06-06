@@ -12,10 +12,10 @@ isEmpty(TARGET_EXT) {
 }
 
 win32 {
-    DEPLOY_COMMAND = $$QT_INSTALL_BINS/windeployqt
+    DEPLOY_COMMAND = $$QT_INSTALL_BINS/windeployqt$${TARGET_CUSTOM_EXT}
 }
 macx {
-    DEPLOY_COMMAND = $$QT_INSTALL_BINS/macdeployqt
+    DEPLOY_COMMAND = $$QT_INSTALL_BINS/macdeployqt$${TARGET_CUSTOM_EXT}
 }
 
 CONFIG( debug, debug|release ) {

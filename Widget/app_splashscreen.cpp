@@ -30,23 +30,23 @@ APP_SplashScreen::~APP_SplashScreen()
 
 void APP_SplashScreen::fadeIn()
 {
-    fadeAnimation->setStartValue(0.01);
+    fadeAnimation->setStartValue(0.001);
     fadeAnimation->setEndValue(1.0);
     fadeAnimation->setDuration(time);
 
     fadeAnimation->start(QAbstractAnimation::KeepWhenStopped);
-    QTimer::singleShot(time, this, SLOT(fadeOut()));
+    QTimer::singleShot(time, this, &APP_SplashScreen::fadeOut);
 }
 
 void APP_SplashScreen::fadeOut()
 {
     fadeAnimation->stop();
     fadeAnimation->setStartValue(1.0);
-    fadeAnimation->setEndValue(0.01);
+    fadeAnimation->setEndValue(0.001);
     fadeAnimation->setDuration(time);
 
     fadeAnimation->start(QAbstractAnimation::KeepWhenStopped);
-    QTimer::singleShot(time, this, SLOT(hide()));
+    QTimer::singleShot(time, this, &APP_SplashScreen::hide);
 }
 
 void APP_SplashScreen::hide()

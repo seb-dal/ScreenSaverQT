@@ -1,37 +1,31 @@
 #include "dialbutton.h"
 #include "dialbutton_ui.h"
 
+#include "utils/appConst.h"
+#include "utils/util.h"
+
 DialButton::DialButton(QString title, QWidget* parent)
     : QWidget(parent)
     , ui(new Ui::DialButton)
 {
     ui->setupUi(this);
     ui->Title->setText(title);
-
-    QObject::connect(ui->bt, &QDial::valueChanged, this, &DialButton::value);
 }
 
-DialButton::~DialButton()
-{
-    delete ui;
-}
+DialButton::~DialButton() { delete ui; }
 
-void DialButton::value(int v)
+void DialButton::value(int v) { emit valueChange(v); }
+
+void DialButton::textUpdate(int v)
 {
-    emit valueChange(v);
+    ui->content->setText(QString("%1%").arg(static_cast<int>(v / 256.f * 100)));
 }
 
 void DialButton::resizeEvent(QResizeEvent*)
 {
-    QSize s = this->size();
-    int size = qMin(s.height(), s.width());
-    float ratio = size / 200.f;
+    float ratio = util::computeRatio(this);
+    util::setFontSize(ui->Title, appConst::sizeTitleText * ratio);
 
-    QFont f(ui->Title->font());
-    f.setPixelSize(16 * ratio);
-    ui->Title->setFont(f);
-
-    QFont f2(ui->content->font());
-    f2.setPixelSize(32 * ratio);
-    ui->content->setFont(f2);
+    ratio = util::computeRatio(ui->bt);
+    util::setFontSize(ui->content, appConst::sizeDialText * ratio);
 }

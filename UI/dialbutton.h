@@ -19,6 +19,8 @@ signals:
 private slots:
     void value(int v);
 
+    void textUpdate(int v);
+
 protected:
     void resizeEvent(QResizeEvent*) override;
 

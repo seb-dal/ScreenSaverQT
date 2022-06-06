@@ -39,8 +39,8 @@ SemiTransparentScreen::SemiTransparentScreen(QWidget* parent)
 
 void SemiTransparentScreen::setTransparenty(int tr)
 {
-    QColor c(0, 0, 0, tr); // bug stylesheet : rgba(0,0,0,1) == rgba(0,0,0,255)
+    // bug stylesheet : rgba(0,0,0,1) == rgba(0,0,0,255)
     frame->setStyleSheet(
         QString("background-color: %1;")
-            .arg(c.name(QColor::HexArgb)));
+            .arg(QColor(0, 0, 0, tr).name(QColor::HexArgb)));
 }

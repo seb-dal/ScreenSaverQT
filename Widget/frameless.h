@@ -24,10 +24,10 @@ public:
         Top = auto_int_pow2(C),
         Right = auto_int_pow2(C),
         Bottom = auto_int_pow2(C),
-        TopLeft = auto_int_pow2(C),
-        TopRight = auto_int_pow2(C),
-        BottomLeft = auto_int_pow2(C),
-        BottomRight = auto_int_pow2(C),
+        TopLeft = Top + Left,
+        TopRight = Top + Right,
+        BottomLeft = Bottom + Left,
+        BottomRight = Bottom + Right,
     };
     Q_ENUM(Edge);
     Q_DECLARE_FLAGS(Edges, Edge);

@@ -2,7 +2,8 @@
 #define DIALBUTTON_UI_H
 
 #include "ui_template.h"
-
+#include "utils/appConst.h"
+#include "utils/util.h"
 #include <QDial>
 #include <QLabel>
 #include <QTabWidget>
@@ -29,9 +30,11 @@ public:
         if (parent->objectName().isEmpty())
             parent->setObjectName(QString::fromUtf8("DialButton"));
 
+        parent->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
+
         componentCreate(MainLayout, QVBoxLayout, parent);
         {
-            MainLayout->setContentsMargins(0, 6, 0, 6);
+            MainLayout->setContentsMargins(0, appConst::spaceBetweenButton, 0, appConst::spaceBetweenButton);
             componentCreate(horizontalLayout, QHBoxLayout, nullptr);
             {
                 horizontalLayout->setContentsMargins(0, 0, 0, 0);
@@ -43,44 +46,34 @@ public:
                     Title->setAlignment(Qt::AlignCenter);
                     Title->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
 
-                    QFont f(Title->font());
+                    util::setFontBold(Title, true);
+                }
+
+                componentCreate(bt, QDial, parent);
+                {
+                    MainLayout->addWidget(bt);
+                    bt->setContentsMargins(0, 0, 0, 0);
+                    bt->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+
+                    bt->setMaximum(220);
+                    bt->setMinimum(0);
+                    QObject::connect(bt, SIGNAL(valueChanged(int)), parent, SLOT(value(int)));
+
+                    componentCreate(InLayout, QVBoxLayout, bt);
                     {
-                        f.setBold(true);
-                    }
-                    Title->setFont(f);
+                        bt->setLayout(InLayout);
+                        InLayout->setContentsMargins(0, 0, 0, 0);
 
-                    componentCreate(bt, QDial, Title);
-                    {
-                        MainLayout->addWidget(bt);
-
-                        bt->setMaximum(200);
-                        bt->setMinimum(0);
-
-                        componentCreate(InLayout, QVBoxLayout, bt);
+                        componentCreate(content, QLabel, bt);
                         {
-                            bt->setLayout(InLayout);
-                            InLayout->setContentsMargins(0, 0, 0, 0);
+                            InLayout->addWidget(content);
+                            content->setAlignment(Qt::AlignCenter);
+                            content->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
-                            componentCreate(content, QLabel, bt);
-                            {
-                                InLayout->addWidget(content);
-                                content->setAlignment(Qt::AlignCenter);
-                                content->setSizePolicy(
-                                    QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-                                QFont f(content->font());
-                                {
-                                    f.setBold(true);
-                                    content->setFont(f);
-                                }
+                            util::setFontBold(content, true);
 
-                                QObject::connect(bt, &QDial::valueChanged, [&](int n) {
-                                    float min = bt->minimum();
-                                    float max = bt->maximum();
-                                    float f = (n - min) / (max - min);
-                                    content->setText(QString("%1%").arg((int)(f * 100)));
-                                });
-                                content->setText("0%");
-                            }
+                            QObject::connect(bt, SIGNAL(valueChanged(int)), parent, SLOT(textUpdate(int)));
+                            content->setText("0%");
                         }
                     }
                 }

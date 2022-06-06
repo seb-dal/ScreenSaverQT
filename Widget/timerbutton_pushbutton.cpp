@@ -1,6 +1,8 @@
 #include "timerbutton_pushbutton.h"
 
 #include "UI/ui_template.h"
+#include "utils/appConst.h"
+#include "utils/util.h"
 #include <QIcon>
 #include <QPaintEngine>
 #include <QResizeEvent>
@@ -27,11 +29,8 @@ void TimerButton_PushButton::initialize()
 TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
     : QPushButton("", parent)
 {
-    sizeIcon = qMin(this->sizeHint().height(), this->sizeHint().width());
-    float ratio = sizeIcon / 200.f;
-
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    //this->setIcon(QIcon("://img/bt_normal.png"));
+    this->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
+    this->setContentsMargins(0, 0, 0, 0);
     this->setFlat(true);
 
     componentCreate(MainLayout, QVBoxLayout, this);
@@ -41,6 +40,7 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
         componentCreate(BT_icon, SmoothImageLabel, this);
         {
             BT_icon->setText("");
+            BT_icon->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
             BT_icon->setAlignment(Qt::AlignmentFlag::AlignCenter);
             MainLayout->addWidget(BT_icon);
 
@@ -51,14 +51,10 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
                 componentCreate(textBT, QLabel, BT_icon);
                 {
                     layout->addWidget(textBT);
+                    textBT->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
                     textBT->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
-                    QFont f(this->textBT->font());
-                    {
-                        f.setBold(true);
-                        f.setPointSize(44 * ratio);
-                        this->textBT->setFont(f);
-                    }
+                    util::setFontBold(this->textBT, true);
                 }
             }
         }
@@ -66,11 +62,11 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
 
     timer = new QTimer(this);
     {
-        QObject::connect(timer, &QTimer::timeout, [&] { this->updateActif(); });
+        QObject::connect(timer, &QTimer::timeout, this, &TimerButton_PushButton::updateActif);
     }
 
-    QObject::connect(this, &QPushButton::pressed, [&] { onPressed(); });
-    QObject::connect(this, &QPushButton::released, [&] { onReleased(); });
+    QObject::connect(this, &QPushButton::pressed, this, &TimerButton_PushButton::onPressed);
+    QObject::connect(this, &QPushButton::released, this, &TimerButton_PushButton::onReleased);
 }
 
 TimerButton_PushButton::~TimerButton_PushButton()
@@ -80,37 +76,18 @@ TimerButton_PushButton::~TimerButton_PushButton()
     delete timer;
 }
 
-bool TimerButton_PushButton::isActif() const
-{
-    return actif;
-}
-void TimerButton_PushButton::setBt_action(const std::function<void()>& newBt_action)
-{
-    bt_action = newBt_action;
-}
-void TimerButton_PushButton::setMaxTimer(int newMax)
-{
-    max = newMax;
-}
+bool TimerButton_PushButton::isActif() const { return actif; }
+void TimerButton_PushButton::setBt_action(const std::function<void()>& newBt_action) { bt_action = newBt_action; }
+void TimerButton_PushButton::setMaxTimer(int newMax) { maxTime = newMax; }
 
 void TimerButton_PushButton::resizeEvent(QResizeEvent* /*event*/)
 {
     QSize s = this->size();
     sizeIcon = qMin(s.height(), s.width());
     updateIcon();
-    float ratio = sizeIcon / 200.f;
 
-    QFont f(this->textBT->font());
-    f.setPointSize(44 * ratio);
-    this->textBT->setFont(f);
-}
-
-static int powTenInt(int nb)
-{
-    int x = 1;
-    for (int i = 0; i < nb; ++i)
-        x *= 10;
-    return x;
+    float ratio = util::computeRatio(this);
+    util::setFontSize(this->textBT, appConst::sizeButtonText * ratio);
 }
 
 void TimerButton_PushButton::setNumberAfterDot(TimerButton_AFTER_DOT newDiv)
@@ -118,8 +95,8 @@ void TimerButton_PushButton::setNumberAfterDot(TimerButton_AFTER_DOT newDiv)
     nbNumber = newDiv;
     int v = qMin(qMax((int)newDiv, 0), 2);
 
-    factor = powTenInt(v);
-    timeInterval = powTenInt(3 - v);
+    factor = util::powTenInt(v);
+    timeInterval = util::powTenInt(3 - v);
 }
 
 void TimerButton_PushButton::onPressed()
@@ -141,7 +118,7 @@ void TimerButton_PushButton::setActif(bool actif)
 {
     this->actif = actif;
     if (actif) {
-        remain = max * factor;
+        remainTime = maxTime * factor;
         timer->start(timeInterval);
     } else {
         timer->stop();
@@ -151,8 +128,8 @@ void TimerButton_PushButton::setActif(bool actif)
 
 void TimerButton_PushButton::updateActif()
 {
-    if (remain > 0) {
-        --remain;
+    if (remainTime > 0) {
+        --remainTime;
     } else {
         timer->stop();
         actif = false;
@@ -168,9 +145,9 @@ void TimerButton_PushButton::updateText()
 {
     if (isActif()) {
         if (factor == 1) {
-            textBT->setText(QString::number(remain));
+            textBT->setText(QString::number(remainTime));
         } else {
-            textBT->setText(QString::number(remain / (double(factor)), 'f', (int)nbNumber));
+            textBT->setText(QString::number(remainTime / (double(factor)), 'f', (int)nbNumber));
         }
     } else {
         textBT->setText("");
@@ -181,13 +158,13 @@ void TimerButton_PushButton::updateIcon(bool force)
 {
     QDateTime now = QDateTime::currentDateTime();
     if (!force) {
-        qint64 diff = resize.msecsTo(now);
+        qint64 diff = lastResize.msecsTo(now);
         static const qint64 minTime = 100;
         if (currentIcon == appliedIcon && diff < minTime) {
             return;
         }
     }
-    resize = now;
+    lastResize = now;
     appliedIcon = currentIcon;
 
     QSize s = this->size();

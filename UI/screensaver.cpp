@@ -1,6 +1,7 @@
 #include "screensaver.h"
 #include "screensaver_ui.h"
 
+#include "utils/appConst.h"
 #include "utils/processesclearer.h"
 
 ScreenSaver::ScreenSaver(QWidget* parent)
@@ -10,19 +11,16 @@ ScreenSaver::ScreenSaver(QWidget* parent)
     ui->setupUi(this);
 }
 
-ScreenSaver::~ScreenSaver()
-{
-    delete ui;
-}
+ScreenSaver::~ScreenSaver() { delete ui; }
 
 void ScreenSaver::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Control) {
-        var.show_frame = !var.show_frame;
+        show_frame = !show_frame;
 
         ShowHideframe();
     }
-    if (var.show_frame) {
+    if (show_frame) {
         if (event->key() == Qt::Key_Escape) {
             this->close();
         }
@@ -35,16 +33,16 @@ void ScreenSaver::ShowHideframe()
     QSize ms = this->minimumSize();
     int wl, bw, pp;
 
-    if (var.show_frame) {
-        pp = -8;
-        wl = bw = 8;
+    if (show_frame) {
+        pp = -appConst::sizeFrame;
+        wl = bw = appConst::sizeFrame;
 
     } else {
-        pp = 8;
+        pp = appConst::sizeFrame;
         wl = 0;
         bw = -1;
     }
-    int ss = (-2) * pp;
+    int ss = -2 * pp;
 
     this->setMinimumSize(ms.width() + ss, ms.height() + ss);
     this->setGeometry( //
@@ -59,6 +57,9 @@ void ScreenSaver::ShowHideframe()
 
 bool ScreenSaver::event(QEvent* e)
 {
+    QSize frame_s(0, 0);
+    QPoint frame_p(0, 0);
+
     switch (e->type()) {
     case QInputEvent::Show:
     case QInputEvent::WindowActivate:
@@ -66,13 +67,20 @@ bool ScreenSaver::event(QEvent* e)
         break;
 
     case QInputEvent::Resize:
-        Remember::put(APP::App_Size::name(), this->size());
+        if (show_frame)
+            frame_s = QSize(2 * appConst::sizeFrame, 2 * appConst::sizeFrame);
+
+        Remember::put(APP::App_Size::name(), this->size() - frame_s);
         break;
+
     case QInputEvent::Move:
-        Remember::put(APP::App_Position::name(), this->pos());
+        if (show_frame)
+            frame_p = QPoint(appConst::sizeFrame, appConst::sizeFrame);
+
+        Remember::put(APP::App_Position::name(), this->pos() + frame_p);
         break;
-    default:
-        break;
+
+    default:;
     }
 
     return QMainWindow::event(e);

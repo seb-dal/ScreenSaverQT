@@ -1,9 +1,8 @@
 #ifndef TIMERBUTTON_PUSHBUTTON_H
 #define TIMERBUTTON_PUSHBUTTON_H
 
-#include "smoothimagelabel.h"
-
 #include "model/TimerButton_DOT.h"
+#include "smoothimagelabel.h"
 #include <QDateTime>
 #include <QLabel>
 #include <QPushButton>
@@ -47,8 +46,8 @@ protected:
 
 private:
     bool actif = false;
-    int remain;
-    int max = 5;
+    int remainTime;
+    int maxTime = 5;
 
     TimerButton_AFTER_DOT nbNumber = ZERO;
     int factor = 1;
@@ -58,7 +57,7 @@ private:
 
     QVBoxLayout* MainLayout;
     SmoothImageLabel* BT_icon;
-    QDateTime resize;
+    QDateTime lastResize;
     int sizeIcon;
     int currentIcon = 0;
     int appliedIcon = -1;
