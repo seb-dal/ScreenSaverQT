@@ -14,6 +14,9 @@
 
 constexpr fameta::counter<__COUNTER__, 0> C;
 
+/*
+* Base de Code by "iman4k" : https://stackoverflow.com/questions/5752408/qt-resize-borderless-widget
+*/
 class FrameLess : public QObject {
     Q_OBJECT
 
