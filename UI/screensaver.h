@@ -28,6 +28,9 @@ protected:
 private:
     bool show_frame = false;
 
+public:
+    static bool reboot;
+
 private:
     Ui::ScreenSaver* ui;
 };

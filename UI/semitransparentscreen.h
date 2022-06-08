@@ -5,8 +5,10 @@
 #include <QWidget>
 
 class SemiTransparentScreen : public QWidget {
+    Q_OBJECT
 public:
     SemiTransparentScreen(QWidget* parent);
+    ~SemiTransparentScreen();
 
 public slots:
     void setTransparenty(int tr);

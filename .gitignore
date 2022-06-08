@@ -1,2 +1,9 @@
 *.user
 *.bak
+.vs/*
+debug/*
+release/*
+*.stash
+*.sln
+*.vcxproj
+*.vcxproj.*

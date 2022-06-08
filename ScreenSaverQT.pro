@@ -56,7 +56,8 @@ HEADERS += \
     utils/processesclearer.h \
     utils/remember.h \
     utils/translator.h \
-    utils/util.h
+    utils/util.h \
+    utils/utilMacro.h
 
 RC_ICONS = ./ressources/img/icon.ico
 

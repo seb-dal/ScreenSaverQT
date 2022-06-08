@@ -1,5 +1,6 @@
 #include "semitransparentscreen.h"
 
+#include "utils/utilMacro.h"
 #include <QApplication>
 #include <QScreen>
 
@@ -35,6 +36,11 @@ SemiTransparentScreen::SemiTransparentScreen(QWidget* parent)
     setAttribute(Qt::WA_TransparentForMouseEvents);
     frame->setAttribute(Qt::WA_TransparentForMouseEvents);
     //showFullScreen();
+}
+
+SemiTransparentScreen::~SemiTransparentScreen()
+{
+    deleteIfReq(frame);
 }
 
 void SemiTransparentScreen::setTransparenty(int tr)

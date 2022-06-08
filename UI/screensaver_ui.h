@@ -79,7 +79,8 @@ public:
 
         StyleLoader::loadStyle(ScreenSaver, "://Style.css");
         {
-            ScreenSaver->setWindowIcon(QIcon("://img/icon.png"));
+            if (ScreenSaver->windowIcon().isNull())
+                ScreenSaver->setWindowIcon(QIcon("://img/icon.png"));
 
             QPalette palette = ScreenSaver->palette();
             palette.setBrush(QPalette::Base, Qt::transparent);
@@ -181,7 +182,7 @@ public:
                     {
                         MainLayout->addWidget(dial_semiTransparentScreen);
 
-                        componentCreate(sts, SemiTransparentScreen, nullptr);
+                        componentCreate(sts, SemiTransparentScreen, ScreenSaver);
                         {
                             sts->show();
                             QObject::connect( //

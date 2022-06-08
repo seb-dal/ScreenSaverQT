@@ -3,6 +3,7 @@
 #include "UI/ui_template.h"
 #include "utils/appConst.h"
 #include "utils/util.h"
+#include "utils/utilMacro.h"
 #include <QIcon>
 #include <QPaintEngine>
 #include <QResizeEvent>
@@ -10,20 +11,20 @@
 #include <QStylePainter>
 #include <QTimer>
 
-QPixmap* TimerButton_PushButton::icon_normal;
-QPixmap* TimerButton_PushButton::icon_normal_pressed;
-QPixmap* TimerButton_PushButton::icon_actif;
-QPixmap* TimerButton_PushButton::icon_actif_pressed;
+QImage* TimerButton_PushButton::icon_normal;
+QImage* TimerButton_PushButton::icon_normal_pressed;
+QImage* TimerButton_PushButton::icon_actif;
+QImage* TimerButton_PushButton::icon_actif_pressed;
 
 void TimerButton_PushButton::initialize()
 {
-    TimerButton_PushButton::icon_normal = new QPixmap("://img/bt_normal.png");
+    TimerButton_PushButton::icon_normal = new QImage("://img/bt_normal.png");
 
-    TimerButton_PushButton::icon_normal_pressed = new QPixmap("://img/bt_actif.png");
+    TimerButton_PushButton::icon_normal_pressed = new QImage("://img/bt_actif.png");
 
-    TimerButton_PushButton::icon_actif = new QPixmap("://img/bt_actif.png");
+    TimerButton_PushButton::icon_actif = new QImage("://img/bt_actif.png");
 
-    TimerButton_PushButton::icon_actif_pressed = new QPixmap("://img/bt_actif_pressed.png");
+    TimerButton_PushButton::icon_actif_pressed = new QImage("://img/bt_actif_pressed.png");
 }
 
 TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
@@ -71,9 +72,11 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
 
 TimerButton_PushButton::~TimerButton_PushButton()
 {
-    delete textBT;
-    delete layout;
-    delete timer;
+    deleteIfReq(MainLayout);
+    deleteIfReq(BT_icon);
+    //deleteIfReq(textBT);
+    //deleteIfReq(layout);
+    deleteIfReq(timer);
 }
 
 bool TimerButton_PushButton::isActif() const { return actif; }
@@ -159,7 +162,7 @@ void TimerButton_PushButton::updateIcon(bool force)
     QDateTime now = QDateTime::currentDateTime();
     if (!force) {
         qint64 diff = lastResize.msecsTo(now);
-        static const qint64 minTime = 100;
+        static const qint64 minTime = 250;
         if (currentIcon == appliedIcon && diff < minTime) {
             return;
         }
@@ -169,7 +172,7 @@ void TimerButton_PushButton::updateIcon(bool force)
 
     QSize s = this->size();
     sizeIcon = qMin(s.height(), s.width());
-    QPixmap* current;
+    QImage* current;
     switch (currentIcon) {
     case TBPB_state::normal:
         current = icon_normal;
@@ -192,5 +195,5 @@ void TimerButton_PushButton::updateIcon(bool force)
     }
 
     if (current != nullptr)
-        BT_icon->setPixmap(current->scaled(QSize(sizeIcon, sizeIcon), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        BT_icon->setCurrent(current);
 }

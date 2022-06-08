@@ -8,8 +8,13 @@ class SmoothImageLabel : public QLabel {
 public:
     SmoothImageLabel(QWidget* parent);
 
+    void setCurrent(QImage* pix);
+
 protected:
     void paintEvent(QPaintEvent*) override;
+
+private:
+    QImage* current = nullptr;
 };
 
 #endif // SMOOTHIMAGELABEL_H

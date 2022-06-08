@@ -9,19 +9,35 @@
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-    Remember::initialize();
-    Translator::setLanguage();
+    int err_code = 0;
+    bool firstShow = true;
 
-    TimerButton_PushButton::initialize();
+    while (ScreenSaver::reboot) {
 
-    ScreenSaver w;
-    APP_SplashScreen app_ss([&] { w.show(); });
+        ScreenSaver::reboot = false;
+        QApplication app(argc, argv);
 
-    int err_code = app.exec();
+        Remember::initialize();
+        Translator::setLanguage();
 
-    Remember::saveData();
-    ProcessesClearer::clearAll();
+        TimerButton_PushButton::initialize();
+
+        ScreenSaver w;
+
+        if (firstShow) {
+            APP_SplashScreen app_ss([&] { w.show(); });
+            firstShow = false;
+
+            err_code = app.exec();
+        } else {
+            w.show();
+
+            err_code = app.exec();
+        }
+
+        Remember::saveData();
+        ProcessesClearer::clearAll();
+    }
 
     return err_code;
 }

@@ -8,6 +8,7 @@ class BlackScreen : public QDialog {
     Q_OBJECT
 public:
     BlackScreen(QWidget* parent = nullptr);
+    ~BlackScreen();
 
 protected:
     void mouseReleaseEvent(QMouseEvent*) override;

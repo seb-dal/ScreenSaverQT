@@ -3,6 +3,7 @@
 
 #include "utils/appConst.h"
 #include "utils/util.h"
+#include "utils/utilMacro.h"
 
 TimerButton::TimerButton(QString title, QWidget* parent)
     : QWidget(parent)
@@ -12,7 +13,7 @@ TimerButton::TimerButton(QString title, QWidget* parent)
     ui->Title->setText(title);
 }
 
-TimerButton::~TimerButton() { delete ui; }
+TimerButton::~TimerButton() { deleteIfReq(ui); }
 
 void TimerButton::resizeEvent(QResizeEvent*)
 {

@@ -33,6 +33,7 @@ public:
     Q_DECLARE_FLAGS(Edges, Edge);
 
     FrameLess(QWidget* target);
+    ~FrameLess();
 
     void setBorderWidth(int w) { _borderWidth = w; }
     int borderWidth() const { return _borderWidth; }

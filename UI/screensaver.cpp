@@ -3,6 +3,10 @@
 
 #include "utils/appConst.h"
 #include "utils/processesclearer.h"
+#include "utils/utilMacro.h"
+
+bool ScreenSaver::reboot = true;
+;
 
 ScreenSaver::ScreenSaver(QWidget* parent)
     : QMainWindow(parent)
@@ -11,7 +15,7 @@ ScreenSaver::ScreenSaver(QWidget* parent)
     ui->setupUi(this);
 }
 
-ScreenSaver::~ScreenSaver() { delete ui; }
+ScreenSaver::~ScreenSaver() { deleteIfReq(ui); }
 
 void ScreenSaver::keyPressEvent(QKeyEvent* event)
 {
@@ -53,6 +57,17 @@ void ScreenSaver::ShowHideframe()
 
     ui->fl->setBorderWidth(bw);
     ui->frame->setMidLineWidth(wl);
+
+    if (!show_frame) {
+        ScreenSaver::reboot = true;
+        this->close();
+        /*Ui::ScreenSaver* uitemp = ui;
+        ui = new Ui::ScreenSaver;
+        ui->setupUi(this);
+
+        deleteIfReq(uitemp);
+        show();*/
+    }
 }
 
 bool ScreenSaver::event(QEvent* e)
@@ -64,6 +79,7 @@ bool ScreenSaver::event(QEvent* e)
     case QInputEvent::Show:
     case QInputEvent::WindowActivate:
         ProcessesClearer::clearAll();
+        return true;
         break;
 
     case QInputEvent::Resize:
@@ -71,6 +87,7 @@ bool ScreenSaver::event(QEvent* e)
             frame_s = QSize(2 * appConst::sizeFrame, 2 * appConst::sizeFrame);
 
         Remember::put(APP::App_Size::name(), this->size() - frame_s);
+        return true;
         break;
 
     case QInputEvent::Move:
@@ -78,6 +95,7 @@ bool ScreenSaver::event(QEvent* e)
             frame_p = QPoint(appConst::sizeFrame, appConst::sizeFrame);
 
         Remember::put(APP::App_Position::name(), this->pos() + frame_p);
+        return true;
         break;
 
     default:;

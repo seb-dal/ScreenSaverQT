@@ -3,6 +3,7 @@
 
 #include "utils/appConst.h"
 #include "utils/util.h"
+#include "utils/utilMacro.h"
 
 DialButton::DialButton(QString title, QWidget* parent)
     : QWidget(parent)
@@ -12,7 +13,7 @@ DialButton::DialButton(QString title, QWidget* parent)
     ui->Title->setText(title);
 }
 
-DialButton::~DialButton() { delete ui; }
+DialButton::~DialButton() { deleteIfReq(ui); }
 
 void DialButton::value(int v) { emit valueChange(v); }
 

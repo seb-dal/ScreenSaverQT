@@ -1,5 +1,7 @@
 #include "frameless.h"
 
+#include "utils/utilMacro.h"
+
 FrameLess::FrameLess(QWidget* target)
     : _target(target)
     , _cursorchanged(false)
@@ -12,6 +14,11 @@ FrameLess::FrameLess(QWidget* target)
     _target->setAttribute(Qt::WA_Hover);
     _target->installEventFilter(this);
     _rubberband = new QRubberBand(QRubberBand::Rectangle);
+}
+
+FrameLess::~FrameLess()
+{
+    deleteIfReq(_rubberband);
 }
 
 bool FrameLess::eventFilter(QObject* o, QEvent* e)

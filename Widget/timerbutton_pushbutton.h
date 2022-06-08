@@ -4,6 +4,7 @@
 #include "model/TimerButton_DOT.h"
 #include "smoothimagelabel.h"
 #include <QDateTime>
+#include <QImage>
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
@@ -15,6 +16,7 @@ enum TBPB_state {
 };
 
 class TimerButton_PushButton : public QPushButton {
+    Q_OBJECT
 public:
     TimerButton_PushButton(QWidget* parent = nullptr);
     ~TimerButton_PushButton();
@@ -67,10 +69,10 @@ private:
 
     std::function<void()> bt_action = []() {};
 
-    static QPixmap* icon_normal;
-    static QPixmap* icon_normal_pressed;
-    static QPixmap* icon_actif;
-    static QPixmap* icon_actif_pressed;
+    static QImage* icon_normal;
+    static QImage* icon_normal_pressed;
+    static QImage* icon_actif;
+    static QImage* icon_actif_pressed;
 };
 
 #endif // TIMERBUTTON_PUSHBUTTON_H

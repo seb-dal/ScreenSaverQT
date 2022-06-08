@@ -14,4 +14,8 @@ BlackScreen::BlackScreen(QWidget* parent)
     this->showFullScreen();
 }
 
+BlackScreen::~BlackScreen()
+{
+}
+
 void BlackScreen::mouseReleaseEvent(QMouseEvent* /*event*/) { this->close(); }

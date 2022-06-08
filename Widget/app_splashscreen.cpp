@@ -1,10 +1,11 @@
 #include "app_splashscreen.h"
 
-#define deleteIF(var)  \
-    if (var) {         \
-        delete var;    \
-        var = nullptr; \
-    }
+#include "utils/utilMacro.h"
+
+APP_SplashScreen::APP_SplashScreen()
+{
+
+}
 
 APP_SplashScreen::APP_SplashScreen(std::function<void()> func_then, const int time)
     : time(time)
@@ -24,8 +25,8 @@ APP_SplashScreen::APP_SplashScreen(std::function<void()> func_then, const int ti
 
 APP_SplashScreen::~APP_SplashScreen()
 {
-    deleteIF(splash);
-    deleteIF(fadeAnimation);
+    deleteIfReq(splash);
+    deleteIfReq(fadeAnimation);
 }
 
 void APP_SplashScreen::fadeIn()
@@ -54,6 +55,7 @@ void APP_SplashScreen::hide()
     fadeAnimation->stop();
     func_then();
     splash->hide();
-    deleteIF(splash);
-    deleteIF(fadeAnimation);
+
+    deleteIfReq(splash);
+    deleteIfReq(fadeAnimation);
 }

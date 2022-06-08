@@ -9,6 +9,7 @@
 class APP_SplashScreen : public QObject {
     Q_OBJECT
 public:
+    APP_SplashScreen();
     APP_SplashScreen(std::function<void()> func_then, const int time = 500);
 
     ~APP_SplashScreen();

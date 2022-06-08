@@ -1,5 +1,6 @@
 #include "remember.h"
 
+#include "utils/utilMacro.h"
 #include <QSettings>
 #include <QStandardPaths>
 
@@ -14,7 +15,7 @@ void Remember::initialize()
         values.insert(key, iniFile->value(key));
     }
 
-    delete iniFile;
+    deleteIfReq(iniFile);
 }
 
 void Remember::saveData()
@@ -27,7 +28,7 @@ void Remember::saveData()
     }
 
     iniFile->sync();
-    delete iniFile;
+    deleteIfReq(iniFile);
 }
 
 void Remember::put(const QString name, const QVariant& val) { values.insert(name, val); }
