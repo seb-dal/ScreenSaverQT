@@ -8,6 +8,8 @@ class Translator {
 
 public:
     static void setLanguage();
+
+    static void free();
 };
 
 #endif // TRANSLATOR_H

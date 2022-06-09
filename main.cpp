@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
         QApplication app(argc, argv);
 
         Remember::initialize();
+
         Translator::setLanguage();
 
         TimerButton_PushButton::initialize();
@@ -37,6 +38,8 @@ int main(int argc, char* argv[])
 
         Remember::saveData();
         ProcessesClearer::clearAll();
+        TimerButton_PushButton::deleteStatic();
+        Translator::free();
     }
 
     return err_code;

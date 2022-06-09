@@ -43,6 +43,7 @@ public:
 public:
     void setupUi(QMainWindow* ScreenSaver)
     {
+        static QWidget* thisWidget = ScreenSaver;
         if (ScreenSaver->objectName().isEmpty())
             ScreenSaver->setObjectName(QString::fromUtf8("ScreenSaver"));
         ScreenSaver->setWindowTitle("ScreenSaver");
@@ -126,7 +127,7 @@ public:
                                     "[System.Windows.Forms.PowerState]::%1, $false, $false)")
                                                        .arg(hibernateMode ? "Hibernate" : "Suspend");
 
-                                QProcess* prog = new QProcess();
+                                QProcess* prog = new QProcess(thisWidget);
                                 ProcessesClearer::add(prog);
                                 prog->start("cmd", { "/c", commande });
                             });
@@ -151,7 +152,7 @@ public:
                                                    "int hMsg, int wParam, int lParam);"
                                                    "' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)";
 
-                                QProcess* prog = new QProcess();
+                                QProcess* prog = new QProcess(thisWidget);
                                 ProcessesClearer::add(prog);
                                 prog->start("powershell", { commande });
                             });
@@ -170,7 +171,7 @@ public:
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
-                            BlackScreen screen;
+                            BlackScreen screen(thisWidget);
                             screen.show();
                             screen.exec();
                         });

@@ -14,3 +14,9 @@ void Translator::setLanguage()
     if (translator.load(":/i18n/" + file + ".qm"))
         QCoreApplication::installTranslator(&translator);
 }
+
+void Translator::free()
+{
+    if (!translator.isEmpty())
+        QCoreApplication::removeTranslator(&translator);
+}

@@ -30,6 +30,7 @@ public:
     void setMaxTimer(int newMax);
 
     static void initialize();
+    static void deleteStatic();
 public slots:
     void onPressed();
 

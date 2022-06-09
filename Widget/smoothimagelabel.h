@@ -7,6 +7,7 @@ class SmoothImageLabel : public QLabel {
     Q_OBJECT
 public:
     SmoothImageLabel(QWidget* parent);
+    ~SmoothImageLabel();
 
     void setCurrent(QImage* pix);
 

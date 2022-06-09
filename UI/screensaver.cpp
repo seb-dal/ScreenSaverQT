@@ -61,12 +61,6 @@ void ScreenSaver::ShowHideframe()
     if (!show_frame) {
         ScreenSaver::reboot = true;
         this->close();
-        /*Ui::ScreenSaver* uitemp = ui;
-        ui = new Ui::ScreenSaver;
-        ui->setupUi(this);
-
-        deleteIfReq(uitemp);
-        show();*/
     }
 }
 

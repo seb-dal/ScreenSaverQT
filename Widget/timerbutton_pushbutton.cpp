@@ -11,10 +11,10 @@
 #include <QStylePainter>
 #include <QTimer>
 
-QImage* TimerButton_PushButton::icon_normal;
-QImage* TimerButton_PushButton::icon_normal_pressed;
-QImage* TimerButton_PushButton::icon_actif;
-QImage* TimerButton_PushButton::icon_actif_pressed;
+QImage* TimerButton_PushButton::icon_normal = nullptr;
+QImage* TimerButton_PushButton::icon_normal_pressed = nullptr;
+QImage* TimerButton_PushButton::icon_actif = nullptr;
+QImage* TimerButton_PushButton::icon_actif_pressed = nullptr;
 
 void TimerButton_PushButton::initialize()
 {
@@ -25,6 +25,17 @@ void TimerButton_PushButton::initialize()
     TimerButton_PushButton::icon_actif = new QImage("://img/bt_actif.png");
 
     TimerButton_PushButton::icon_actif_pressed = new QImage("://img/bt_actif_pressed.png");
+}
+
+void TimerButton_PushButton::deleteStatic()
+{
+    deleteIfReq(TimerButton_PushButton::icon_normal);
+
+    deleteIfReq(TimerButton_PushButton::icon_normal_pressed);
+
+    deleteIfReq(TimerButton_PushButton::icon_actif);
+
+    deleteIfReq(TimerButton_PushButton::icon_actif_pressed);
 }
 
 TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
@@ -72,8 +83,8 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
 
 TimerButton_PushButton::~TimerButton_PushButton()
 {
-    deleteIfReq(MainLayout);
-    deleteIfReq(BT_icon);
+    //deleteIfReq(MainLayout);
+    //deleteIfReq(BT_icon);
     //deleteIfReq(textBT);
     //deleteIfReq(layout);
     deleteIfReq(timer);

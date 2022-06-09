@@ -3,7 +3,8 @@
 #include "utils/utilMacro.h"
 
 FrameLess::FrameLess(QWidget* target)
-    : _target(target)
+    : QObject(target) // delete recursif
+    , _target(target)
     , _cursorchanged(false)
     , _leftButtonPressed(false)
     , _borderWidth(10)
@@ -13,12 +14,12 @@ FrameLess::FrameLess(QWidget* target)
     _target->setWindowFlags(Qt::FramelessWindowHint);
     _target->setAttribute(Qt::WA_Hover);
     _target->installEventFilter(this);
-    _rubberband = new QRubberBand(QRubberBand::Rectangle);
+    _rubberband = new QRubberBand(QRubberBand::Rectangle, target);
 }
 
 FrameLess::~FrameLess()
 {
-    deleteIfReq(_rubberband);
+    //deleteIfReq(_rubberband);
 }
 
 bool FrameLess::eventFilter(QObject* o, QEvent* e)

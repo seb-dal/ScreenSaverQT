@@ -2,9 +2,9 @@
 
 #include "utils/utilMacro.h"
 
-APP_SplashScreen::APP_SplashScreen()
+APP_SplashScreen::APP_SplashScreen(QObject* parent)
+    : QObject(parent)
 {
-
 }
 
 APP_SplashScreen::APP_SplashScreen(std::function<void()> func_then, const int time)
