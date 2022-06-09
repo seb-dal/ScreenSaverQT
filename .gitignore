@@ -7,3 +7,4 @@ release/*
 *.sln
 *.vcxproj
 *.vcxproj.*
+*.rc
