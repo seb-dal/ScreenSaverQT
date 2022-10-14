@@ -66,8 +66,7 @@ void Options::save()
     bool hide = ui->hideAfter_pushButton->isChecked();
     Remember::put(APP::Hide_After_Action::name(), hide ? 1 : 0);
 
-    int pn = ui->pn_0->isChecked() ? 0 : ui->pn_0->isChecked() ? 1
-                                                               : 2;
+    int pn = ui->pn_0->isChecked() ? 0 : (ui->pn_1->isChecked() ? 1 : (ui->pn_2->isChecked() ? 2 : 1));
     Remember::put(APP::Number_After_Dot::name(), pn);
 
     bool m_h = ui->hibernate_pushButton->isChecked();

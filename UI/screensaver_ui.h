@@ -116,22 +116,22 @@ public:
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
-                            auto ret = QtConcurrent::run([] {
-                                bool hibernateMode = Remember::get_(APP::Standby_HibernateMode::name(), 1) != 0;
+                            //auto ret = QtConcurrent::run([] {
+                            bool hibernateMode = Remember::get_(APP::Standby_HibernateMode::name(), 1) != 0;
 
-                                QString commande = QString(
-                                    "powershell.exe"
-                                    " -command add-type"
-                                    " -assemblyname System.Windows.Forms;"
-                                    " [System.Windows.Forms.Application]::SetSuspendState("
-                                    "[System.Windows.Forms.PowerState]::%1, $false, $false)")
-                                                       .arg(hibernateMode ? "Hibernate" : "Suspend");
+                            QString commande = QString(
+                                "powershell.exe"
+                                " -command add-type"
+                                " -assemblyname System.Windows.Forms;"
+                                " [System.Windows.Forms.Application]::SetSuspendState("
+                                "[System.Windows.Forms.PowerState]::%1, $false, $false)")
+                                                   .arg(hibernateMode ? "Hibernate" : "Suspend");
 
-                                QProcess* prog = new QProcess(thisWidget);
-                                ProcessesClearer::add(prog);
-                                prog->start("cmd", { "/c", commande });
-                            });
+                            QProcess* prog = new QProcess(thisWidget);
+                            ProcessesClearer::add(prog);
+                            prog->start("cmd", { "/c", commande });
                         });
+                        //});
                     }
                 }
 
@@ -146,17 +146,17 @@ public:
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
-                            auto ret = QtConcurrent::run([] {
-                                QString commande = "(Add-Type '[DllImport(\"user32.dll\")]"
-                                                   " public static extern int SendMessage(int hWnd, "
-                                                   "int hMsg, int wParam, int lParam);"
-                                                   "' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)";
+                            //auto ret = QtConcurrent::run([] {
+                            QString commande = "(Add-Type '[DllImport(\"user32.dll\")]"
+                                               " public static extern int SendMessage(int hWnd, "
+                                               "int hMsg, int wParam, int lParam);"
+                                               "' -Name a -Pas)::SendMessage(-1,0x0112,0xF170,2)";
 
-                                QProcess* prog = new QProcess(thisWidget);
-                                ProcessesClearer::add(prog);
-                                prog->start("powershell", { commande });
-                            });
+                            QProcess* prog = new QProcess(thisWidget);
+                            ProcessesClearer::add(prog);
+                            prog->start("powershell", { commande });
                         });
+                        //});
                     }
                 }
 

@@ -17,13 +17,21 @@ public:
     static T get_(const QString name, T defaultValue)
     {
         QVariant v = get(name);
-        if (!v.isValid() || !v.canConvert<T>() || v.type() != QVariant(defaultValue).type()) {
+        // Verification if value convertable to output
+        if (!v.isValid() || !v.canConvert<T>()) {
+            put(name, defaultValue);
+            return defaultValue;
+        }
+
+        // Verification convertion from QString to ANY give True but may not necessary be convertable
+        QVariant v2 = v;
+        bool convert = v2.convert(QVariant(defaultValue).type());
+        if (!convert) {
             put(name, defaultValue);
             return defaultValue;
         }
 
         T res = v.value<T>();
-
         return res;
     }
 
