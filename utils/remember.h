@@ -17,11 +17,14 @@ public:
     static T get_(const QString name, T defaultValue)
     {
         QVariant v = get(name);
-        if (!v.isValid() || !v.canConvert<T>()) {
+        if (!v.isValid() || !v.canConvert<T>() || v.type() != QVariant(defaultValue).type()) {
             put(name, defaultValue);
             return defaultValue;
         }
-        return v.value<T>();
+
+        T res = v.value<T>();
+
+        return res;
     }
 
 private:

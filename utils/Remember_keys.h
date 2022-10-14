@@ -36,6 +36,7 @@ public:
     EnumClass(Show_BlackScreen_Button, EnumClass_Base, C2);
     EnumClass(Show_ShadeScreen_Button, EnumClass_Base, C2);
     EnumClass(Language, EnumClass_Base, C2);
+    EnumClass(ShowContextMenu, EnumClass_Base, C2);
 };
 
 #endif // REMEMBER_KEYS_H

@@ -66,7 +66,7 @@ public:
 
         bool sts_display = Remember::get_(APP::Show_ShadeScreen_Button::name(), 1) != 0;
 
-        QPoint pos = Remember::get_<QPoint>(APP::App_Position::name(), QPoint(10, 10));
+        QPoint pos = Remember::get_(APP::App_Position::name(), QPoint(10, 10));
         ScreenSaver->move(pos);
 
         int nbButton
@@ -75,7 +75,7 @@ public:
             + static_cast<int>(ecranNoir_display)
             + static_cast<int>(sts_display);
 
-        QSize size = Remember::get_<QSize>(APP::App_Size::name(), QSize(200, nbButton * 200));
+        QSize size = Remember::get_(APP::App_Size::name(), QSize(200, nbButton * 200));
         ScreenSaver->resize(size);
 
         StyleLoader::loadStyle(ScreenSaver, "://Style.css");
@@ -171,7 +171,7 @@ public:
                             if (hideAfter) {
                                 frame->parentWidget()->setWindowState(Qt::WindowMinimized);
                             }
-                            BlackScreen screen(thisWidget);
+                            BlackScreen screen;
                             screen.show();
                             screen.exec();
                         });
@@ -202,8 +202,7 @@ public:
         QMetaObject::connectSlotsByName(ScreenSaver);
     } // setupUi
 
-    void
-    retranslateUi(QMainWindow* ScreenSaver)
+    void retranslateUi(QMainWindow* ScreenSaver)
     {
         ScreenSaver->setWindowTitle("ScreenSaver");
     } // retranslateUi

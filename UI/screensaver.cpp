@@ -1,11 +1,15 @@
 #include "screensaver.h"
 #include "screensaver_ui.h"
 
+#include "options.h"
+#include <QMenu>
+
+#include "utils/Remember_keys.h"
 #include "utils/appConst.h"
 #include "utils/processesclearer.h"
 #include "utils/utilMacro.h"
 
-bool ScreenSaver::reboot = true;
+bool ScreenSaver::reboot = false;
 ;
 
 ScreenSaver::ScreenSaver(QWidget* parent)
@@ -13,9 +17,52 @@ ScreenSaver::ScreenSaver(QWidget* parent)
     , ui(new Ui::ScreenSaver)
 {
     ui->setupUi(this);
+
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
+        this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
 ScreenSaver::~ScreenSaver() { deleteIfReq(ui); }
+
+void ScreenSaver::rebootApp()
+{
+    ScreenSaver::reboot = true;
+    this->close();
+}
+
+void ScreenSaver::ShowContextMenu(const QPoint& pos)
+{
+    QVariant show_context_menu = Remember::get_<int>(APP::ShowContextMenu::name(), 1);
+    if (!show_context_menu.toBool()) {
+        return;
+    }
+
+    QMenu contextMenu(this);
+
+    contextMenu.setStyleSheet("");
+    {
+        contextMenu.addAction(show_frame ? tr("Hide Frame") : tr("Show Frame"), [this] {
+            show_frame = !show_frame;
+            ShowHideframe();
+        });
+        contextMenu.addSeparator();
+
+        contextMenu.addAction(tr("Options"), [this] {
+            Options opt(this);
+            opt.show();
+            opt.exec();
+            if (opt.result() == QDialog::Accepted) {
+                rebootApp();
+            }
+        });
+        contextMenu.addSeparator();
+
+        contextMenu.addAction(tr("Quit"), [this] { close(); });
+    }
+    contextMenu.exec(mapToGlobal(pos));
+}
 
 void ScreenSaver::keyPressEvent(QKeyEvent* event)
 {
@@ -59,8 +106,7 @@ void ScreenSaver::ShowHideframe()
     ui->frame->setMidLineWidth(wl);
 
     if (!show_frame) {
-        ScreenSaver::reboot = true;
-        this->close();
+        rebootApp();
     }
 }
 

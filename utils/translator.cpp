@@ -7,9 +7,10 @@
 
 QTranslator Translator::translator;
 
-void Translator::setLanguage()
+void Translator::setLanguage(QString lang)
 {
-    QString file = "ScreenSaver_" + Remember::get_(APP::Language::name(), QString("en")).toLower();
+    free();
+    QString file = "ScreenSaver_" + lang.toLower();
 
     if (translator.load(":/i18n/" + file + ".qm"))
         QCoreApplication::installTranslator(&translator);

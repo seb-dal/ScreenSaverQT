@@ -20,12 +20,14 @@ CONFIG += embed_translations
 SOURCES += \
     UI/blackscreen.cpp \
     UI/dialbutton.cpp \
+    UI/options.cpp \
     UI/semitransparentscreen.cpp \
     Widget/app_splashscreen.cpp \
     Widget/frameless.cpp \
     UI/screensaver.cpp \
     UI/timerbutton.cpp \
     Widget/smoothimagelabel.cpp \
+    Widget/switchbutton.cpp \
     Widget/timerbutton_pushbutton.cpp \
     main.cpp \
     utils/StyleLoader.cpp\
@@ -35,9 +37,11 @@ SOURCES += \
     utils/util.cpp
 
 HEADERS += \
+    UI/Options_ui.h \
     UI/blackscreen.h \
     UI/dialbutton.h \
     UI/dialbutton_ui.h \
+    UI/options.h \
     UI/semitransparentscreen.h \
     UI/ui_template.h \
     Widget/app_splashscreen.h \
@@ -46,6 +50,7 @@ HEADERS += \
     UI/screensaver_ui.h \
     UI/timerbutton.h \
     Widget/smoothimagelabel.h \
+    Widget/switchbutton.h \
     Widget/timerbutton_pushbutton.h \
     UI/timerbutton_ui.h \
     lib/include/fameta-counter \

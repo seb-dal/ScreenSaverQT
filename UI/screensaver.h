@@ -20,6 +20,10 @@ public:
     ScreenSaver(QWidget* parent = nullptr);
     ~ScreenSaver();
 
+public slots:
+    void rebootApp();
+    void ShowContextMenu(const QPoint& pos);
+
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void ShowHideframe();

@@ -7,7 +7,7 @@ class Translator {
     static QTranslator translator;
 
 public:
-    static void setLanguage();
+    static void setLanguage(QString lang);
 
     static void free();
 };

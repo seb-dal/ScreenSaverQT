@@ -2,6 +2,14 @@
 
 #include "utils/utilMacro.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#define GET_GlobalPos globalPosition().toPoint
+#define GET_pos position().toPoint
+#else
+#define GET_GlobalPos globalPos
+#define GET_pos pos
+#endif
+
 FrameLess::FrameLess(QWidget* target)
     : QObject(target) // delete recursif
     , _target(target)
@@ -58,7 +66,7 @@ bool FrameLess::eventFilter(QObject* o, QEvent* e)
 
 void FrameLess::mouseHover(QHoverEvent* e)
 {
-    updateCursorShape(_target->mapToGlobal(e->position().toPoint()));
+    updateCursorShape(_target->mapToGlobal(e->GET_pos()));
 }
 
 void FrameLess::mouseLeave(QEvent* /*e*/)
@@ -74,7 +82,7 @@ void FrameLess::mousePress(QMouseEvent* e)
         _leftButtonPressed = true;
 
         calculateCursorPosition( //
-            e->globalPosition().toPoint(),
+            e->GET_GlobalPos(),
             _target->frameGeometry(),
             _mousePress);
 
@@ -112,19 +120,19 @@ void FrameLess::mouseMove(QMouseEvent* e)
             int bottom = _rubberband->frameGeometry().bottom();
 
             if (_mousePress & Edge::Top) {
-                top = e->globalPosition().toPoint().y();
+                top = e->GET_GlobalPos().y();
             }
 
             if (_mousePress & Edge::Bottom) {
-                bottom = e->globalPosition().toPoint().y();
+                bottom = e->GET_GlobalPos().y();
             }
 
             if (_mousePress & Edge::Left) {
-                left = e->globalPosition().toPoint().x();
+                left = e->GET_GlobalPos().x();
             }
 
             if (_mousePress & Edge::Right) {
-                right = e->globalPosition().toPoint().x();
+                right = e->GET_GlobalPos().x();
             }
 
             QRect newRect(QPoint(left, top), QPoint(right, bottom));
@@ -138,7 +146,7 @@ void FrameLess::mouseMove(QMouseEvent* e)
             _rubberband->setGeometry(QRect(QPoint(left, top), QPoint(right, bottom)));
         }
     } else {
-        updateCursorShape(e->globalPosition().toPoint());
+        updateCursorShape(e->GET_GlobalPos());
     }
 }
 
