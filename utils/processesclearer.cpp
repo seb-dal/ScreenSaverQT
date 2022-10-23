@@ -8,9 +8,11 @@ void ProcessesClearer::add(QProcess* p) { processes.push_back(p); }
 
 void ProcessesClearer::clearAll()
 {
-    for (QProcess* p : processes) {
-        p->kill();
-        deleteIfReq(p);
+    for (auto p = processes.begin(); p != processes.end(); p++) {
+        if (*p) {
+            (*p)->kill();
+            deleteIfReq((*p));
+        }
     }
     processes.clear();
 }

@@ -15,6 +15,7 @@ SmoothImageLabel::~SmoothImageLabel()
 void SmoothImageLabel::setCurrent(QImage* pix)
 {
     current = pix;
+    repaint();
 }
 
 void SmoothImageLabel::paintEvent(QPaintEvent*)

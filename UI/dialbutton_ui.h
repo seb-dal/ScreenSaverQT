@@ -4,6 +4,7 @@
 #include "ui_template.h"
 #include "utils/appConst.h"
 #include "utils/util.h"
+
 #include <QDial>
 #include <QLabel>
 #include <QTabWidget>
@@ -53,9 +54,9 @@ public:
                 {
                     MainLayout->addWidget(bt);
                     bt->setContentsMargins(0, 0, 0, 0);
-                    bt->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
+                    bt->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
 
-                    bt->setMaximum(220);
+                    bt->setMaximum(220 - 1);
                     bt->setMinimum(0);
                     QObject::connect(bt, SIGNAL(valueChanged(int)), parent, SLOT(value(int)));
 
@@ -67,13 +68,14 @@ public:
                         componentCreate(content, QLabel, bt);
                         {
                             InLayout->addWidget(content);
+                            content->setFont(QFont("Arial"));
+
                             content->setAlignment(Qt::AlignCenter);
                             content->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
                             util::setFontBold(content, true);
 
                             QObject::connect(bt, SIGNAL(valueChanged(int)), parent, SLOT(textUpdate(int)));
-                            content->setText("0%");
                         }
                     }
                 }

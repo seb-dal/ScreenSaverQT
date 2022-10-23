@@ -36,27 +36,22 @@ bool FrameLess::eventFilter(QObject* o, QEvent* e)
     case QEvent::MouseMove:
         mouseMove(static_cast<QMouseEvent*>(e));
         return true;
-        break;
 
     case QEvent::HoverMove:
         mouseHover(static_cast<QHoverEvent*>(e));
         return true;
-        break;
 
     case QEvent::Leave:
         mouseLeave(e);
         return true;
-        break;
 
     case QEvent::MouseButtonPress:
         mousePress(static_cast<QMouseEvent*>(e));
         return true;
-        break;
 
     case QEvent::MouseButtonRelease:
         mouseRealese(static_cast<QMouseEvent*>(e));
         return true;
-        break;
 
     default:;
     }

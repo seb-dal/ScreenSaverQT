@@ -4,6 +4,7 @@
 #include "utils/appConst.h"
 #include "utils/util.h"
 #include "utils/utilMacro.h"
+
 #include <QIcon>
 #include <QPaintEngine>
 #include <QResizeEvent>
@@ -20,7 +21,7 @@ void TimerButton_PushButton::initialize()
 {
     TimerButton_PushButton::icon_normal = new QImage("://img/bt_normal.png");
 
-    TimerButton_PushButton::icon_normal_pressed = new QImage("://img/bt_actif.png");
+    TimerButton_PushButton::icon_normal_pressed = new QImage("://img/bt_normal_pressed.png");
 
     TimerButton_PushButton::icon_actif = new QImage("://img/bt_actif.png");
 
@@ -63,6 +64,8 @@ TimerButton_PushButton::TimerButton_PushButton(QWidget* parent)
                 componentCreate(textBT, QLabel, BT_icon);
                 {
                     layout->addWidget(textBT);
+
+                    textBT->setFont(QFont("Arial"));
                     textBT->setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
                     textBT->setAlignment(Qt::AlignmentFlag::AlignCenter);
 
@@ -111,20 +114,22 @@ void TimerButton_PushButton::setNumberAfterDot(TimerButton_AFTER_DOT newDiv)
 
     factor = util::powTenInt(v);
     timeInterval = util::powTenInt(3 - v);
+
+    compensation = 1;
 }
 
 void TimerButton_PushButton::onPressed()
 {
     currentIcon = (isActif() ? TBPB_state::actif : TBPB_state::normal) | TBPB_state::pressed;
 
-    updateIcon();
+    updateIcon(true);
 }
 
 void TimerButton_PushButton::onReleased()
 {
     currentIcon = (isActif() ? TBPB_state::normal : TBPB_state::actif);
 
-    updateIcon();
+    updateIcon(true);
     setActif(!isActif());
 }
 
@@ -132,7 +137,13 @@ void TimerButton_PushButton::setActif(bool actif)
 {
     this->actif = actif;
     if (actif) {
-        remainTime = maxTime * factor;
+        while (maxTime % timeInterval != 0) {
+            timeInterval /= 10;
+            compensation *= 10;
+        }
+
+        remainTime = maxTime / timeInterval;
+
         timer->start(timeInterval);
     } else {
         timer->stop();
@@ -159,9 +170,9 @@ void TimerButton_PushButton::updateText()
 {
     if (isActif()) {
         if (factor == 1) {
-            textBT->setText(QString::number(remainTime));
+            textBT->setText(QString::number(remainTime / compensation));
         } else {
-            textBT->setText(QString::number(remainTime / (double(factor)), 'f', (int)nbNumber));
+            textBT->setText(QString::number((remainTime / compensation) / (double(factor)), 'f', (int)nbNumber));
         }
     } else {
         textBT->setText("");
@@ -172,9 +183,10 @@ void TimerButton_PushButton::updateIcon(bool force)
 {
     QDateTime now = QDateTime::currentDateTime();
     if (!force) {
+        // for resize only
         qint64 diff = lastResize.msecsTo(now);
         static const qint64 minTime = 250;
-        if (currentIcon == appliedIcon && diff < minTime) {
+        if (currentIcon == appliedIcon || diff < minTime) {
             return;
         }
     }

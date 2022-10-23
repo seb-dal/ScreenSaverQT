@@ -1,8 +1,11 @@
 #include "util.h"
 
+#include <QApplication>
+#include <QFont>
+#include <QScreen>
+
 #include "UI/ui_template.h"
 #include "utils/appConst.h"
-#include <QFont>
 
 void util::setFontSize(QWidget* obj, int size)
 {
@@ -16,6 +19,16 @@ void util::setFontBold(QWidget* obj, bool bold)
     QFont f = obj->font();
     f.setBold(bold);
     obj->setFont(f);
+}
+
+void util::setSizePolicy(QWidget* obj, QSizePolicy::Policy horizontal, QSizePolicy::Policy vertical)
+{
+    QSizePolicy sizePolicy(horizontal, vertical);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(obj->hasHeightForWidth());
+
+    obj->setSizePolicy(sizePolicy);
 }
 
 int util::powTenInt(int nb)
@@ -35,4 +48,13 @@ float util::computeRatio(QWidget* obj, int* sizeSquare)
         (*sizeSquare) = size;
 
     return size / appConst::sizeDivRatio;
+}
+
+void util::setMultiScreenGeom(QWidget* obj)
+{
+    QRect m;
+    for (QScreen* s : QApplication::screens()) {
+        m = m.united(s->geometry());
+    }
+    obj->setGeometry(m);
 }

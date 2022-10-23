@@ -11,15 +11,18 @@ DialButton::DialButton(QString title, QWidget* parent)
 {
     ui->setupUi(this);
     ui->Title->setText(title);
+    textUpdate(0);
 }
 
 DialButton::~DialButton() { deleteIfReq(ui); }
+
+void DialButton::setValue(int v) { ui->bt->setValue(v); }
 
 void DialButton::value(int v) { emit valueChange(v); }
 
 void DialButton::textUpdate(int v)
 {
-    ui->content->setText(QString("%1%").arg(static_cast<int>(v / 256.f * 100)));
+    ui->content->setText(QString("%1%").arg(100 - static_cast<int>(v / 255.f * 100)));
 }
 
 void DialButton::resizeEvent(QResizeEvent*)

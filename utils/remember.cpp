@@ -23,7 +23,9 @@ void Remember::saveData()
     QString path = "./conf.ini";
     QSettings* iniFile = new QSettings(path, QSettings::IniFormat);
 
-    for (auto key = values.keyBegin(); key != values.keyEnd(); ++key) {
+    auto keys = values.keys();
+    keys.sort();
+    for (auto key = keys.begin(); key != keys.end(); ++key) {
         iniFile->setValue(*key, values.value(*key));
     }
 

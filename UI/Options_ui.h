@@ -34,13 +34,14 @@ class Ui_Options {
     QLabel* hideAfter_label;
     QHBoxLayout* horizontalLayout_2;
     QFrame* line;
+    QFrame* line_2;
+    QFrame* line_3;
     QGridLayout* gridLayout;
     QLabel* standby_label;
     QLabel* screenOff_label;
     QLabel* BlackScreen_label;
     QLabel* OpacityScreen_label;
     QLabel* RC_label;
-    QFrame* line_2;
     QGridLayout* gridLayout_2;
     QLabel* lang_label;
     QHBoxLayout* horizontalLayout;
@@ -75,7 +76,7 @@ public:
     {
         if (parent->objectName().isEmpty())
             parent->setObjectName(QString::fromUtf8("Options"));
-        parent->resize(360, 440);
+        parent->resize(370, 460);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -88,18 +89,20 @@ public:
             {
                 {
                     componentCreate(TimeBeforeAction_label, QLabel, parent);
+                    TimeBeforeAction_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     OtherLayout->addWidget(TimeBeforeAction_label, 0, 0, 1, 1);
 
                     componentCreate(TimeBeforeAction_spinBox, QSpinBox, parent);
                     {
-                        TimeBeforeAction_spinBox->setSuffix(QString::fromUtf8(" sec"));
-                        TimeBeforeAction_spinBox->setMinimum(0);
+                        TimeBeforeAction_spinBox->setSuffix(QString::fromUtf8("00 ms"));
+                        TimeBeforeAction_spinBox->setMinimum(1);
                         TimeBeforeAction_spinBox->setMaximum(2147483647);
                     }
                     OtherLayout->addWidget(TimeBeforeAction_spinBox, 0, 1, 1, 1);
                 }
                 {
                     componentCreate(pn_label, QLabel, parent);
+                    pn_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     OtherLayout->addWidget(pn_label, 1, 0, 1, 1);
 
                     componentCreate(horizontalLayout_2, QHBoxLayout, nullptr);
@@ -126,6 +129,7 @@ public:
                 }
                 {
                     componentCreate(hideAfter_label, QLabel, parent);
+                    hideAfter_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     OtherLayout->addWidget(hideAfter_label, 2, 0, 1, 1);
 
                     componentCreate(hideAfter_pushButton, SwitchButton, parent);
@@ -133,6 +137,7 @@ public:
                 }
                 {
                     componentCreate(hibernate_label, QLabel, parent);
+                    hibernate_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     OtherLayout->addWidget(hibernate_label, 3, 0, 1, 1);
 
                     componentCreate(hibernate_pushButton, SwitchButton, parent);
@@ -147,6 +152,7 @@ public:
             {
                 {
                     componentCreate(standby_label, QLabel, parent);
+                    standby_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     gridLayout->addWidget(standby_label, 0, 0, 1, 1);
 
                     componentCreate(standby_pushButton, SwitchButton, parent);
@@ -154,6 +160,7 @@ public:
                 }
                 {
                     componentCreate(screenOff_label, QLabel, parent);
+                    screenOff_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     gridLayout->addWidget(screenOff_label, 1, 0, 1, 1);
 
                     componentCreate(screenOff_pushButton, SwitchButton, parent);
@@ -161,6 +168,7 @@ public:
                 }
                 {
                     componentCreate(BlackScreen_label, QLabel, parent);
+                    BlackScreen_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     gridLayout->addWidget(BlackScreen_label, 2, 0, 1, 1);
 
                     componentCreate(BlackScreen_pushButton, SwitchButton, parent);
@@ -168,6 +176,7 @@ public:
                 }
                 {
                     componentCreate(OpacityScreen_label, QLabel, parent);
+                    OpacityScreen_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     gridLayout->addWidget(OpacityScreen_label, 3, 0, 1, 1);
 
                     componentCreate(OpacityScreen_pushButton, SwitchButton, parent);
@@ -175,6 +184,7 @@ public:
                 }
                 {
                     componentCreate(RC_label, QLabel, parent);
+                    RC_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                     gridLayout->addWidget(RC_label, 4, 0, 1, 1);
 
                     componentCreate(RC_pushButton, SwitchButton, parent);
@@ -188,6 +198,7 @@ public:
             componentCreate(gridLayout_2, QGridLayout, nullptr);
             {
                 componentCreate(lang_label, QLabel, parent);
+                lang_label->setAlignment(Qt::AlignmentFlag::AlignCenter);
                 gridLayout_2->addWidget(lang_label, 0, 0, 1, 1);
 
                 componentCreate(Lang_comboBox, QComboBox, parent);
@@ -199,12 +210,28 @@ public:
             }
             verticalLayout->addLayout(gridLayout_2);
 
+            Separator(line_3, verticalLayout, parent);
+
             componentCreate(horizontalLayout, QHBoxLayout, nullptr);
             {
+                QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+                sizePolicy.setHorizontalStretch(0);
+                sizePolicy.setVerticalStretch(0);
+                sizePolicy.setHeightForWidth(false);
+
+                QFont font;
+                font.setBold(true);
+                font.setWeight(QFont::Black);
+                font.setPointSize(10);
+
                 componentCreate(ok, QPushButton, parent);
+                ok->setSizePolicy(sizePolicy);
+                ok->setFont(font);
                 horizontalLayout->addWidget(ok);
 
                 componentCreate(cancel, QPushButton, parent);
+                cancel->setSizePolicy(sizePolicy);
+                cancel->setFont(font);
                 horizontalLayout->addWidget(cancel);
             }
             verticalLayout->addLayout(horizontalLayout);
@@ -214,6 +241,11 @@ public:
 
         QObject::connect(ok, &QPushButton::released, parent, qOverload<>(&QDialog::accept));
         QObject::connect(cancel, &QPushButton::released, parent, qOverload<>(&QDialog::reject));
+
+        QObject::connect(OpacityScreen_pushButton, SIGNAL(toggled(bool)), parent, SLOT(validate()));
+        QObject::connect(BlackScreen_pushButton, SIGNAL(toggled(bool)), parent, SLOT(validate()));
+        QObject::connect(screenOff_pushButton, SIGNAL(toggled(bool)), parent, SLOT(validate()));
+        QObject::connect(standby_pushButton, SIGNAL(toggled(bool)), parent, SLOT(validate()));
     }
 
     void retranslateUi(QDialog* parent)

@@ -25,6 +25,8 @@ public slots:
     void save();
     void translate();
 
+    void validate();
+
 private:
     Ui::Options* ui;
     option_vars temp;

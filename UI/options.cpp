@@ -25,7 +25,7 @@ Options::~Options()
 
 void Options::load()
 {
-    int t = Remember::get_(APP::Time_After_Button_Clicked::name(), 3);
+    int t = Remember::get_(APP::Time_After_Button_Clicked::name(), 3000) / 100;
     ui->TimeBeforeAction_spinBox->setValue(t);
 
     bool hide = Remember::get_(APP::Hide_After_Action::name(), 1);
@@ -51,8 +51,8 @@ void Options::load()
     bool bt_stand = Remember::get_(APP::Show_Standby_Button::name(), 1);
     ui->standby_pushButton->setChecked(bt_stand);
 
-    bool bt_rc = Remember::get_(APP::ShowContextMenu::name(), 1);
-    ui->RC_pushButton->setChecked(bt_rc);
+    bool cm_rc = Remember::get_(APP::Show_ContextMenu::name(), 1);
+    ui->RC_pushButton->setChecked(cm_rc);
 
     QString lang = Remember::get_(APP::Language::name(), QString("en"));
     ui->Lang_comboBox->setCurrentText(lang);
@@ -60,7 +60,7 @@ void Options::load()
 
 void Options::save()
 {
-    int t = ui->TimeBeforeAction_spinBox->value();
+    int t = ui->TimeBeforeAction_spinBox->value() * 100;
     Remember::put(APP::Time_After_Button_Clicked::name(), t);
 
     bool hide = ui->hideAfter_pushButton->isChecked();
@@ -84,8 +84,8 @@ void Options::save()
     bool bt_stand = ui->standby_pushButton->isChecked();
     Remember::put(APP::Show_Standby_Button::name(), bt_stand ? 1 : 0);
 
-    bool bt_rc = ui->RC_pushButton->isChecked();
-    Remember::put(APP::ShowContextMenu::name(), bt_rc ? 1 : 0);
+    bool cm_rc = ui->RC_pushButton->isChecked();
+    Remember::put(APP::Show_ContextMenu::name(), cm_rc ? 1 : 0);
 
     QString lang = ui->Lang_comboBox->currentText();
     Remember::put(APP::Language::name(), lang);
@@ -96,4 +96,14 @@ void Options::translate()
     QString lang = ui->Lang_comboBox->currentText();
     Translator::setLanguage(lang);
     ui->retranslateUi(this);
+}
+
+void Options::validate()
+{
+    bool bt_opa = ui->OpacityScreen_pushButton->isChecked();
+    bool bt_blk = ui->BlackScreen_pushButton->isChecked();
+    bool bt_off = ui->screenOff_pushButton->isChecked();
+    bool bt_stand = ui->standby_pushButton->isChecked();
+
+    ui->ok->setDisabled(!(bt_opa || bt_blk || bt_off || bt_stand));
 }

@@ -7,14 +7,17 @@
 class SemiTransparentScreen : public QWidget {
     Q_OBJECT
 public:
-    SemiTransparentScreen(QWidget* parent);
+    SemiTransparentScreen();
     ~SemiTransparentScreen();
+
+    static int getTransparency_save();
 
 public slots:
     void setTransparenty(int tr);
 
 private:
     QLabel* frame;
+    static int transparency_save;
 };
 
 #endif // SEMITRANSPARENTSCREEN_H

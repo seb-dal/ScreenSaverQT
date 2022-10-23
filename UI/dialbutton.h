@@ -16,6 +16,9 @@ public:
 signals:
     void valueChange(int);
 
+public:
+    void setValue(int v);
+
 private slots:
     void value(int v);
 

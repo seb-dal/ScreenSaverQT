@@ -1,18 +1,13 @@
 #include "blackscreen.h"
-#include <QApplication>
-#include <QScreen>
 
 #include <QLabel>
+
+#include "utils/util.h"
 
 BlackScreen::BlackScreen()
     : QDialog(nullptr)
 {
-    QRect m;
-    for (QScreen* s : QApplication::screens()) {
-        m = m.united(s->geometry());
-    }
-
-    setGeometry(m);
+    util::setMultiScreenGeom(this);
 
     this->setObjectName(QString::fromUtf8("BlackScreen"));
 

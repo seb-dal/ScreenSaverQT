@@ -3,9 +3,9 @@
 
 namespace appConst {
 static constexpr float sizeDivRatio = 200.f;
-static constexpr int sizeTitleText = 20;
-static constexpr int sizeButtonText = 60;
-static constexpr int sizeDialText = 40;
+static constexpr int sizeTitleText = 22;
+static constexpr int sizeButtonText = 80;
+static constexpr int sizeDialText = 50;
 static constexpr int sizeFrame = 8;
 static constexpr int spaceBetweenButton = 6;
 };

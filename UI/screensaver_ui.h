@@ -11,6 +11,7 @@
 #include "utils/StyleLoader.h"
 #include "utils/processesclearer.h"
 #include "utils/remember.h"
+#include "utils/utilMacro.h"
 #include <QApplication>
 #include <QDial>
 #include <QFrame>
@@ -52,7 +53,7 @@ public:
         nb = qMin(qMax(nb, 0), 2);
         Remember::put(APP::Number_After_Dot::name(), nb);
 
-        int time = Remember::get_(APP::Time_After_Button_Clicked::name(), 3);
+        int time = Remember::get_(APP::Time_After_Button_Clicked::name(), 3000);
         time = qMax(time, 0);
         Remember::put(APP::Time_After_Button_Clicked::name(), time);
 
@@ -69,11 +70,7 @@ public:
         QPoint pos = Remember::get_(APP::App_Position::name(), QPoint(10, 10));
         ScreenSaver->move(pos);
 
-        int nbButton
-            = static_cast<int>(veille_display)
-            + static_cast<int>(eteindre_display)
-            + static_cast<int>(ecranNoir_display)
-            + static_cast<int>(sts_display);
+        int nbButton = i_sc(veille_display) + i_sc(eteindre_display) + i_sc(ecranNoir_display) + i_sc(sts_display);
 
         QSize size = Remember::get_(APP::App_Size::name(), QSize(200, nbButton * 200));
         ScreenSaver->resize(size);
@@ -161,7 +158,7 @@ public:
                 }
 
                 if (ecranNoir_display) {
-                    component2Create(ecranNoir, TimerButton, QCoreApplication::translate("ScreenSaver", "Black Screen"), frame);
+                    component2Create(ecranNoir, TimerButton, QCoreApplication::translate("ScreenSaver", "Black screen"), frame);
                     {
                         MainLayout->addWidget(ecranNoir);
                         ecranNoir->updateButton();
@@ -179,11 +176,11 @@ public:
                 }
 
                 if (sts_display) {
-                    component2Create(dial_semiTransparentScreen, DialButton, QCoreApplication::translate("ScreenSaver", "Opacity"), frame);
+                    component2Create(dial_semiTransparentScreen, DialButton, QCoreApplication::translate("ScreenSaver", "Brightness"), frame);
                     {
                         MainLayout->addWidget(dial_semiTransparentScreen);
 
-                        componentCreate(sts, SemiTransparentScreen, ScreenSaver);
+                        componentCreate(sts, SemiTransparentScreen, /*ScreenSaver*/);
                         {
                             sts->show();
                             QObject::connect( //
@@ -191,6 +188,7 @@ public:
                                 &DialButton::valueChange,
                                 sts,
                                 &SemiTransparentScreen::setTransparenty);
+                            dial_semiTransparentScreen->setValue(SemiTransparentScreen::getTransparency_save());
                         }
                     }
                 }

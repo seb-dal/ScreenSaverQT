@@ -7,6 +7,8 @@ SwitchButton::SwitchButton(QWidget* parent)
 {
     setCheckable(true);
     QObject::connect(this, &QPushButton::toggled, this, &SwitchButton::Translate);
+
+    util::setSizePolicy(this, QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 SwitchButton::~SwitchButton()

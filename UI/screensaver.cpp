@@ -24,7 +24,11 @@ ScreenSaver::ScreenSaver(QWidget* parent)
         this, SLOT(ShowContextMenu(const QPoint&)));
 }
 
-ScreenSaver::~ScreenSaver() { deleteIfReq(ui); }
+ScreenSaver::~ScreenSaver()
+{
+    deleteIfReq(ui->sts);
+    deleteIfReq(ui);
+}
 
 void ScreenSaver::rebootApp()
 {
@@ -34,15 +38,19 @@ void ScreenSaver::rebootApp()
 
 void ScreenSaver::ShowContextMenu(const QPoint& pos)
 {
-    QVariant show_context_menu = Remember::get_<int>(APP::ShowContextMenu::name(), 1);
+    QVariant show_context_menu = Remember::get_<int>(APP::Show_ContextMenu::name(), 1);
     if (!show_context_menu.toBool()) {
         return;
     }
 
     QMenu contextMenu(this);
 
-    contextMenu.setStyleSheet("");
     {
+        contextMenu.addAction(tr("Iconify"), [this] {
+            this->setWindowState(Qt::WindowState::WindowMinimized);
+        });
+        contextMenu.addSeparator();
+
         contextMenu.addAction(show_frame ? tr("Hide Frame") : tr("Show Frame"), [this] {
             show_frame = !show_frame;
             ShowHideframe();
@@ -120,7 +128,6 @@ bool ScreenSaver::event(QEvent* e)
     case QInputEvent::WindowActivate:
         ProcessesClearer::clearAll();
         return true;
-        break;
 
     case QInputEvent::Resize:
         if (show_frame)
@@ -128,7 +135,6 @@ bool ScreenSaver::event(QEvent* e)
 
         Remember::put(APP::App_Size::name(), this->size() - frame_s);
         return true;
-        break;
 
     case QInputEvent::Move:
         if (show_frame)
@@ -136,7 +142,6 @@ bool ScreenSaver::event(QEvent* e)
 
         Remember::put(APP::App_Position::name(), this->pos() + frame_p);
         return true;
-        break;
 
     default:;
     }

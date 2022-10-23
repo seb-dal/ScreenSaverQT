@@ -27,7 +27,7 @@ public:
 
     void setBt_action(const std::function<void()>& newBt_action);
 
-    void setMaxTimer(int newMax);
+    void setMaxTimer(int newMax_ms);
 
     static void initialize();
     static void deleteStatic();
@@ -50,11 +50,12 @@ protected:
 private:
     bool actif = false;
     int remainTime;
-    int maxTime = 5;
+    int maxTime = 5000;
 
     TimerButton_AFTER_DOT nbNumber = ZERO;
     int factor = 1;
     int timeInterval = 1000;
+    int compensation = 1;
 
     QTimer* timer;
 

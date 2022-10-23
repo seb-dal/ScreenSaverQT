@@ -83,31 +83,44 @@
     </message>
     <message>
         <location filename="../../UI/screensaver_ui.h" line="164"/>
-        <source>Black Screen</source>
-        <translation>Écran noire</translation>
+        <source>Black screen</source>
+        <translation>Écran noir</translation>
     </message>
     <message>
         <location filename="../../UI/screensaver_ui.h" line="182"/>
-        <source>Opacity</source>
-        <translation>Opacité</translation>
+        <source>Brightness</source>
+        <translation>Luminisité</translation>
     </message>
     <message>
-        <location filename="../../UI/screensaver.cpp" line="46"/>
+        <source>Black Screen</source>
+        <translation type="vanished">Écran noire</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation type="vanished">Opacité</translation>
+    </message>
+    <message>
+        <location filename="../../UI/screensaver.cpp" line="45"/>
+        <source>Iconify</source>
+        <translation>Réduire</translation>
+    </message>
+    <message>
+        <location filename="../../UI/screensaver.cpp" line="50"/>
         <source>Hide Frame</source>
         <translation>Cacher bordure</translation>
     </message>
     <message>
-        <location filename="../../UI/screensaver.cpp" line="46"/>
+        <location filename="../../UI/screensaver.cpp" line="50"/>
         <source>Show Frame</source>
         <translation>Afficher bordure</translation>
     </message>
     <message>
-        <location filename="../../UI/screensaver.cpp" line="52"/>
+        <location filename="../../UI/screensaver.cpp" line="56"/>
         <source>Options</source>
         <translation>Options</translation>
     </message>
     <message>
-        <location filename="../../UI/screensaver.cpp" line="62"/>
+        <location filename="../../UI/screensaver.cpp" line="66"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
